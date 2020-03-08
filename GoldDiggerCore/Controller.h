@@ -2,15 +2,12 @@
 #include "Map.h"
 #include "Agent.h"
 
-using namespace GoldDiggerMap;
-using namespace GoldDiggerAgent;
-
-namespace GoldDiggerController {
+namespace GoldDiggerCore {
 
 	class Controller {
 	private:
 		Map _map;
-		GoldDiggerAgent::Agent _agent;
+		Agent _agent;
 	public:
 		Controller(const char* path);
 	};

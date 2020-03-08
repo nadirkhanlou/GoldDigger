@@ -1,7 +1,6 @@
 #pragma once
 
-namespace GoldDiggerAgent {
-	
+namespace GoldDiggerCore {
 	class Agent {
 	private:
 		unsigned int _n, _m;			// Dimensions of the map the agent is in

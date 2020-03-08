@@ -1,9 +1,9 @@
 #include "Controller.h"
 
-namespace GoldDiggerController {
+namespace GoldDiggerCore {
 
 	Controller::Controller(const char* path):
 		_map(path)
 	{
 	}
-} // goldDiggerController
+} // namespace goldDiggerCore

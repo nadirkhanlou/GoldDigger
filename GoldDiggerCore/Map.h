@@ -4,7 +4,7 @@
 #include <fstream>
 #include <utility>
 
-namespace GoldDiggerMap {
+namespace GoldDiggerCore {
 
 	class Agent;
 
@@ -43,4 +43,4 @@ namespace GoldDiggerMap {
 	};
 
 
-} // namespace GoldDiggerMap
+} // namespace GoldDiggerCore

@@ -1,7 +1,7 @@
 #include "Map.h"
 
 
-namespace GoldDiggerMap {
+namespace GoldDiggerCore {
 
 	Map::Map(const char* path) {
 		std::ifstream input(path);
@@ -77,4 +77,4 @@ namespace GoldDiggerMap {
 		else return _map[pos].right;
 	}
 
-} // namespace GoldDiggerMap
+} // namespace GoldDiggerCore

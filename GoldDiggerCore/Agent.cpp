@@ -1,5 +1,5 @@
 #include "Agent.h"
 
-namespace GoldDiggerAgent {
+namespace GoldDiggerCore {
 
 } // namespace GoldDiggerAgent

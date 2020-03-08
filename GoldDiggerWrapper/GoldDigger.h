@@ -3,7 +3,7 @@
 #include "../GoldDiggerCore/Controller.h"
 
 using namespace GoldDiggerWrapper;
-using namespace GoldDiggerController;
+using namespace GoldDiggerCore;
 
 namespace GoldDigger {
 
