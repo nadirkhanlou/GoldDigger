@@ -32,3 +32,14 @@
 *.app
 
 .vs/
+
+*.log
+*.log
+*.lastbuildstate
+*.tlog
+*.pdb
+*.asm
+*.config
+*.txt
+*.metagen
+*.cache
