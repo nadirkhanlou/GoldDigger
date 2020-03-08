@@ -26,6 +26,7 @@ namespace GoldDiggerGUI
             InitializeComponent();
             string input = System.IO.File.ReadAllText(_path);
             GenerateGameBoard(input);
+            solver = new GoldDiggerSolver(_path);
         }
 
         public void GenerateGameBoard(string input)
@@ -123,4 +124,4 @@ namespace GoldDiggerGUI
             ResumeLayout();
         }
     }
-}
+} // GoldDiggerGUI

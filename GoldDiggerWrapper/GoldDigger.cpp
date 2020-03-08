@@ -1,7 +1,8 @@
 #include "GoldDigger.h"
+#include "Conversion.h"
 
 namespace GoldDigger {
-	GoldDiggerSolver::GoldDiggerSolver() :ManagedObject<solver>(new solver)
+	GoldDiggerSolver::GoldDiggerSolver(String^ path) :ManagedObject<Controller>(new Controller(Conversion::string_to_char_array(path)))
 	{
 
 	}

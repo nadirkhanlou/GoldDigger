@@ -3,7 +3,7 @@
 
 namespace GoldDiggerMap {
 
-	Map::Map(char* path) {
+	Map::Map(const char* path) {
 		std::ifstream input(path);
 
 		input >> _n >> _m;
@@ -38,7 +38,7 @@ namespace GoldDiggerMap {
 			_map[i] = other._map[i];
 	}
 
-	Map::Map(Map&& other) noexcept
+	Map::Map(Map&& other)
 		: _n(other._n),
 		_m(other._m),
 		_startPos(other._startPos) {
@@ -58,7 +58,7 @@ namespace GoldDiggerMap {
 		return *this;
 	}
 
-	Map& Map::operator=(Map&& other) noexcept {
+	Map& Map::operator=(Map&& other) {
 		_n = other._n;
 		_m = other._m;
 		_startPos = other._startPos;

@@ -30,7 +30,7 @@ namespace GoldDiggerMap {
 		unsigned int _startPos;
 
 	public:
-		Map(char* path);
+		Map(const char* path);
 		~Map();
 		Map(const Map& other);
 		Map(Map&& other);

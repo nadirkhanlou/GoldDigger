@@ -111,11 +111,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Conversion.h" />
     <ClInclude Include="GoldDigger.h" />
     <ClInclude Include="ManagedObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GoldDigger.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GoldDiggerCore\GoldDiggerCore.vcxproj">
+      <Project>{9fdd7a7f-e911-4218-b706-dd8f0420e9a9}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

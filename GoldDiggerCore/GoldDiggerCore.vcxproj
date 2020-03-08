@@ -140,10 +140,12 @@
   <ItemGroup>
     <ClInclude Include="Agent.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Controller.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Agent.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Controller.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
