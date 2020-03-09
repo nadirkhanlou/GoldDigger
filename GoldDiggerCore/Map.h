@@ -6,7 +6,6 @@
 #include <assert.h>
 #include <iostream>
 
-#include "Agent.h"
 #include "AgentAction.h"
 
 namespace GoldDiggerCore {
@@ -31,14 +30,13 @@ namespace GoldDiggerCore {
 		unsigned int _n, _m;
 		unsigned int _startPos;
 
-		~Map();
-
 	public:
 		Map(const char* path);
 		Map(const Map& other);
 		Map(Map&& other);
 		Map& operator=(const Map& other);
 		Map& operator=(Map&& other);
+		~Map();
 
 		Block Sense(unsigned int pos);
 		bool IsActionPossible(unsigned int pos, AgentAction action);
