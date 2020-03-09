@@ -95,20 +95,17 @@ namespace GoldDiggerCore {
 
 	std::pair<unsigned int, int> Map::ActionResult(unsigned int pos, AgentAction action) {
 		assert(pos < _n * _m);
-		if (action == AgentAction::Dig && _map[pos].gold)
-			return std::make_pair(pos, 1000);
-		else if (action == AgentAction::Up && _map[pos].up)
+		assert(IsActionPossible(pos, action));
+		if (action == AgentAction::Dig)
+			return std::make_pair(pos, GOAL_SCORE);
+		else if (action == AgentAction::Up)
 			return std::make_pair(pos - 1, 0);
-		else if (action == AgentAction::Right && _map[pos].right)
+		else if (action == AgentAction::Right)
 			return std::make_pair(pos + _n, 0);
-		else if (action == AgentAction::Down && _map[pos].down)
+		else if (action == AgentAction::Down)
 			return std::make_pair(pos + 1, 0);
-		else if (action == AgentAction::Left && _map[pos].left)
+		else if (action == AgentAction::Left)
 			return std::make_pair(pos - _n, 0);
-		else
-			// @TODO: Think of something to return when the action is not possible
-			std::cerr << "Impossible move!\n";
-		return std::pair<unsigned int, int>();
 	}
 
 	unsigned int Map::NextPosition(unsigned int pos, AgentAction action) {
@@ -130,7 +127,7 @@ namespace GoldDiggerCore {
 		assert(pPos < _n * _m);
 		assert(IsActionPossible(pos, action));
 		if (action == AgentAction::Dig && _map[pos].gold)
-			return 100;
+			return GOAL_SCORE;
 		else
 			return 0;
 	}
