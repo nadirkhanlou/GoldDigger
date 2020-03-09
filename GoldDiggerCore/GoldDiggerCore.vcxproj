@@ -139,8 +139,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Agent.h" />
+    <ClInclude Include="AgentAction.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Controller.h" />
+    <ClInclude Include="Options.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Agent.cpp" />

@@ -1,6 +1,5 @@
 #include "Map.h"
 
-
 namespace GoldDiggerCore {
 
 	Map::Map(const char* path) {
@@ -10,10 +9,10 @@ namespace GoldDiggerCore {
 
 		_map = new Block[_n * _m];
 
+		bool u, r, d, l;
 		for (unsigned int i = 0; i < _n * _m; ++i) {
-			bool d, l, u, r;
-			input >> d >> l >> u >> r;
-			_map[i] = Block(d, l, u, r);
+			input >> u >> r >> d >> l;
+			_map[i] = Block(u, r, d, l);
 		}
 
 		input >> _startPos;
@@ -22,6 +21,7 @@ namespace GoldDiggerCore {
 			_map[tmp].gold = 1;
 			// @TODO: Should I also make this a 'trap' block, e.g. make the other
 			// four actions impossible?
+			_map[tmp].up = _map[tmp].right = _map[tmp].down = _map[tmp].left = 0;
 		}
 	}
 
@@ -69,12 +69,70 @@ namespace GoldDiggerCore {
 		return *this;
 	}
 
-	bool Map::IsActionPossible(unsigned int pos, Action action) {
-		if (action == Action::Dig) return _map[pos].gold;
-		else if (action == Action::Down) return _map[pos].down;
-		else if (action == Action::Left) return _map[pos].left;
-		else if (action == Action::Up) return _map[pos].up;
-		else return _map[pos].right;
+	Block Map::Sense(unsigned int pos) {
+		assert(pos < _n * _m);
+		return _map[pos];
+	}
+
+	bool Map::IsActionPossible(unsigned int pos, AgentAction action) {
+		assert(pos < _n * _m);
+		if (action == AgentAction::Dig) return _map[pos].gold;
+		else if (action == AgentAction::Up) return _map[pos].up;
+		else if (action == AgentAction::Right) return _map[pos].right;
+		else if (action == AgentAction::Down) return _map[pos].down;
+		else return _map[pos].left;
+	}
+
+	std::pair<unsigned int, unsigned int> Map::Get2DCoordinate(unsigned int pos) {
+		assert(pos < _n * _m);
+		return std::make_pair(pos % _n, pos / _n);
+	}
+
+	unsigned int Map::GetFlatCoordinate(unsigned int x, unsigned int y) {
+		assert(pos < _n * _m);
+		return y * _n + x;
+	}
+
+	std::pair<unsigned int, int> Map::ActionResult(unsigned int pos, AgentAction action) {
+		assert(pos < _n * _m);
+		if (action == AgentAction::Dig && _map[pos].gold)
+			return std::make_pair(pos, 1000);
+		else if (action == AgentAction::Up && _map[pos].up)
+			return std::make_pair(pos - 1, 0);
+		else if (action == AgentAction::Right && _map[pos].right)
+			return std::make_pair(pos + _n, 0);
+		else if (action == AgentAction::Down && _map[pos].down)
+			return std::make_pair(pos + 1, 0);
+		else if (action == AgentAction::Left && _map[pos].left)
+			return std::make_pair(pos - _n, 0);
+		else
+			// @TODO: Think of something to return when the action is not possible
+			std::cerr << "Impossible move!\n";
+		return std::pair<unsigned int, int>();
+	}
+
+	unsigned int Map::NextPosition(unsigned int pos, AgentAction action) {
+		assert(Pos < _n * _m);
+		assert(IsActionPossible(pos, action));
+		if (action == AgentAction::Dig)
+			return pos;
+		else if (action == AgentAction::Up)
+			return pos - 1;
+		else if (action == AgentAction::Right)
+			return pos + _n;
+		else if (action == AgentAction::Down)
+			return pos + 1, 0;
+		else // action = Left
+			return pos - _n;
+	}
+
+	int Map::ActionReward(unsigned int pos, AgentAction action) {
+		assert(pPos < _n * _m);
+		assert(IsActionPossible(pos, action));
+		if (action == AgentAction::Dig && _map[pos].gold)
+			return 100;
+		else
+			return 0;
 	}
 
 } // namespace GoldDiggerCore
