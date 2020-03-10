@@ -295,5 +295,35 @@ namespace GoldDiggerGUI
                 _directions[i].Visible = checkBox1.Checked;
             }
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            _result = _solver.ValueIteration();
+            for (int i = 0; i < _result.Length; ++i)
+            {
+                Console.Write(i.ToString() + " " + Enum.GetName(typeof(AgentAction), _result[i]) + "\n");
+                switch (_result[i])
+                {
+                    case (int)AgentAction.Dig:
+
+                        break;
+                    case (int)AgentAction.Down:
+                        _directions[i].Image = GoldDiggerGUI.Properties.Resources.Down;
+                        break;
+                    case (int)AgentAction.Left:
+                        _directions[i].Image = GoldDiggerGUI.Properties.Resources.Left;
+                        break;
+                    case (int)AgentAction.Right:
+                        _directions[i].Image = GoldDiggerGUI.Properties.Resources.Right;
+                        break;
+                    case (int)AgentAction.Up:
+                        _directions[i].Image = GoldDiggerGUI.Properties.Resources.Up;
+                        break;
+                }
+                _directions[i].Visible = checkBox1.Checked;
+            }
+            _movementTimer.Tick += new System.EventHandler(Move);
+            PlayAction(_result[_agentPos - 1]);
+        }
     }
 } // GoldDiggerGUI
