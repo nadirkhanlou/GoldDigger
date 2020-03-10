@@ -25,7 +25,7 @@ namespace GoldDiggerGUI
         int _xStep;
         int _yStep;
         int[] _result;
-        int _resultIndex;
+        int _agentPos;
         Timer _movementTimer = new Timer
         {
             Interval = 40
@@ -64,6 +64,7 @@ namespace GoldDiggerGUI
             _agent.Image = GoldDiggerGUI.Properties.Resources.Hat_man;
             ((System.ComponentModel.ISupportInitialize)(_agent)).EndInit();
             this.Controls.Add(_agent);
+            _agentPos = agentPos - 1;
 
             for(int i = 1; i < positions.Length; i++)
             {
@@ -161,17 +162,15 @@ namespace GoldDiggerGUI
             _agent.Location = new System.Drawing.Point(_agent.Location.X + _xStep, _agent.Location.Y + _yStep);
             if (_timerSteps <= 0)
             {
-                Console.Write(_result[_resultIndex].ToString());
                 _movementTimer.Stop();
-                _resultIndex++;
-                if (_resultIndex < _result.Length)
-                    PlayAction(_result[_resultIndex]);
+                PlayAction(_result[_agentPos]);
             }
         }
 
         void MoveRight()
         {
             _timerSteps = 16;
+            _agentPos += _height;
             _xStep = 2;
             _yStep = 0;
             _movementTimer.Enabled = true;
@@ -181,6 +180,7 @@ namespace GoldDiggerGUI
         void MoveLeft()
         {
             _timerSteps = 16;
+            _agentPos -= _height;
             _xStep = -2;
             _yStep = 0;
             _movementTimer.Enabled = true;
@@ -190,6 +190,7 @@ namespace GoldDiggerGUI
         void MoveUp()
         {
             _timerSteps = 16;
+            _agentPos -= 1;
             _xStep = 0;
             _yStep = -2;
             _movementTimer.Enabled = true;
@@ -199,6 +200,7 @@ namespace GoldDiggerGUI
         void MoveDown()
         {
             _timerSteps = 16;
+            _agentPos += 1;
             _xStep = 0;
             _yStep = 2;
             _movementTimer.Enabled = true;
@@ -240,11 +242,8 @@ namespace GoldDiggerGUI
         private void button1_Click(object sender, EventArgs e)
         {
             _result = _solver.ValueIteration();
-            _resultIndex = 0;
-            for(int i = 0; i < _result.Length; i++)
-                Console.Write(_result[i].ToString() + " ");
             _movementTimer.Tick += new System.EventHandler(Move);
-            PlayAction(_result[_resultIndex]);
+            PlayAction(_result[_agentPos]);
         }
     }
 } // GoldDiggerGUI
