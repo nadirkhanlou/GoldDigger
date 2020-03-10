@@ -64,7 +64,7 @@ namespace GoldDiggerGUI
             _agent.Image = GoldDiggerGUI.Properties.Resources.Hat_man;
             ((System.ComponentModel.ISupportInitialize)(_agent)).EndInit();
             this.Controls.Add(_agent);
-            _agentPos = agentPos - 1;
+            _agentPos = agentPos;
 
             for(int i = 1; i < positions.Length; i++)
             {
@@ -163,7 +163,7 @@ namespace GoldDiggerGUI
             if (_timerSteps <= 0)
             {
                 _movementTimer.Stop();
-                PlayAction(_result[_agentPos]);
+                PlayAction(_result[_agentPos - 1]);
             }
         }
 
@@ -241,9 +241,13 @@ namespace GoldDiggerGUI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            _result = _solver.ValueIteration();
+            _result = _solver.PolicyIteration();
+            for(int i = 0; i < _result.Length; i++)
+            {
+                Console.Write(i.ToString() + " " + Enum.GetName(typeof(AgentAction), _result[i]) + "\n");
+            }
             _movementTimer.Tick += new System.EventHandler(Move);
-            PlayAction(_result[_agentPos]);
+            PlayAction(_result[_agentPos - 1]);
         }
     }
 } // GoldDiggerGUI
