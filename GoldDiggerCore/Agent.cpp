@@ -9,7 +9,7 @@ namespace GoldDiggerCore {
 		_currentPos = _options.agentStartPos;
 	}
 
-	AgentAction* Agent::ValueIteration() {
+	AgentAction* Agent::ValueIteration(double gamma = 0.9) {
 		// Initialize the Values and Policy arrays
 		double* prevValues = new double[_options.n * _options.m]{};
 		const AgentAction AgentActions[] = 
@@ -27,10 +27,10 @@ namespace GoldDiggerCore {
 				max = -1;
 				for (auto action : AgentActions) {
 					if (_map->IsActionPossible(i, action))
-						max = std::max(max, _map->ActionReward(i, action) + prevValues[_map->NextPosition(i, action)]);
+						max = std::max(max, _map->ActionReward(i, action) + gamma * prevValues[_map->NextPosition(i, action)]);
 				}
 				if (max == -1)
-					continue;	// No action was possible
+					continue;	// No actions possible
 				newValues[i] = max;
 				if (std::abs(newValues[i] - prevValues[i]) > EPSILON) {
 					converged = false;
@@ -62,5 +62,77 @@ namespace GoldDiggerCore {
 
 		return policy;
 
+	}
+
+	AgentAction* Agent::PolicyIteration(double gamma = 0.9) {
+		// Initialize the policy and values randomly
+		AgentAction* prevPolicy = new AgentAction[_options.n * _options.m];
+		for (unsigned int i = 0; i < _options.n * _options.m; ++i) {
+			auto action = AgentAction(rand() % 5);
+			prevPolicy[i] = action;
+			while (!_map->IsActionPossible(i, action)) {
+				action = AgentAction(rand() % 5);
+				prevPolicy[i] = action;
+			}
+		}
+		double* prevValues = new double[_options.n * _options.m]{};
+		for (unsigned int i = 0; i < _options.n * _options.m; ++i)
+			prevValues[i] = _map->ActionReward(i, prevPolicy[i])
+			+ gamma * prevValues[_map->NextPosition(i, prevPolicy[i])];
+
+		bool policyConverged = false;
+		unsigned int epoch = 0;
+		while (!policyConverged) {
+			++epoch;
+			policyConverged = true;
+
+			// Calculate the value function for the current policy (Policy Evaluation)
+			bool valuesConverged = false;
+			while (!valuesConverged) {
+				valuesConverged = true;
+				double* newValues = new double[_options.n * _options.m]{};
+				for (unsigned int i = 0; i < _options.n * _options.m; ++i) {
+					newValues[i] = _map->ActionReward(i, prevPolicy[i])
+						+ gamma * prevValues[_map->NextPosition(i, prevPolicy[i])];
+					if (std::abs(newValues[i] - prevValues[i]) > EPSILON)
+						valuesConverged = false;
+				}
+				delete[] prevValues;
+				prevValues = newValues;
+			}
+
+			// Improve the current policy (Policy Improvement)
+			AgentAction* newPolicy = new AgentAction[_options.n * _options.m];
+			const AgentAction AgentActions[] =
+			{ AgentAction::Dig, AgentAction::Up, AgentAction::Right,
+				AgentAction::Down, AgentAction::Left };
+			double max;
+			double temp;
+			AgentAction argmax;
+			for (unsigned int i = 0; i < _options.n * _options.m; ++i) {
+				max = -1;
+				for (auto action : AgentActions) {
+					if (_map->IsActionPossible(i, action)) {
+						temp = _map->ActionReward(i, action) + gamma * prevValues[_map->NextPosition(i, action)];
+						if (temp > max) {
+							max = temp;
+							argmax = action;
+						}
+					}
+				}
+				if (max = -1)
+					continue;			// No actions possible
+
+				if (prevPolicy[i] != argmax)
+					policyConverged = false;
+				newPolicy[i] = argmax;
+			}
+			delete[] prevPolicy;
+			prevPolicy = newPolicy;
+
+		}
+		std::cout << "Policy Iteration converged after " << epoch << " epochs\n";
+
+		return prevPolicy;
 	}
 } // namespace GoldDiggerAgent
