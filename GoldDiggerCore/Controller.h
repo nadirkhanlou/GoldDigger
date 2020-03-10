@@ -14,6 +14,9 @@ namespace GoldDiggerCore {
 		Agent _agent;
 	public:
 		Controller(const char* path);
+		AgentAction* ValueIteration();
+		AgentAction* PolicyIteration();
+		std::pair<int, int> Size();
 	};
 
 } //GoldDiggerSolver

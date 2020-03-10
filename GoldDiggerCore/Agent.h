@@ -5,7 +5,7 @@
 #include <algorithm>
 
 #include "Map.h"
-#include "AgentAction.h"
+#include "../GoldDiggerGUI/AgentAction.cs"
 #include "Options.h"
 
 #define EPSILON 0.001
@@ -30,7 +30,7 @@ namespace GoldDiggerCore {
 		//unsigned int NextPosition(AgentAction action) { return _map->NextPosition(_currentPos, action); }
 		AgentAction* ValueIteration(double gamma = 0.9);
 		AgentAction* PolicyIteration(double gamma = 0.9);
-
+		Options GetOption() { return _options; };
 
 	};
 } // namespace goldDiggerAgent

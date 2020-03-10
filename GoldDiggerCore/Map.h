@@ -6,7 +6,7 @@
 #include <assert.h>
 #include <iostream>
 
-#include "AgentAction.h"
+#include "..\GoldDiggerGUI\AgentAction.cs"
 
 #define GOAL_SCORE 1000
 

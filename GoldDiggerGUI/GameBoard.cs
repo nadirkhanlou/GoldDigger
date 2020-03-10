@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using GoldDigger;
+using GoldDiggerActions;
 
 namespace GoldDiggerGUI
 {
@@ -19,14 +20,23 @@ namespace GoldDiggerGUI
         int _height;
         PictureBox[,] _sprites;
         PictureBox _agent;
-        GoldDiggerSolver solver;
+        GoldDiggerSolver _solver;
+        int _timerSteps;
+        int _xStep;
+        int _yStep;
+        int[] _result;
+        int _resultIndex;
+        Timer _movementTimer = new Timer
+        {
+            Interval = 40
+        };
 
         public GameBoard(Form parent, String _path)
         {
             InitializeComponent();
             string input = System.IO.File.ReadAllText(_path);
             GenerateGameBoard(input);
-            solver = new GoldDiggerSolver(_path);
+            _solver = new GoldDiggerSolver(_path);
         }
 
         public void GenerateGameBoard(string input)
@@ -41,7 +51,10 @@ namespace GoldDiggerGUI
             String[] positions = inputLines[_height * _width + 1].Split(' ');
             int agentPos = int.Parse(positions[0]);
             _agent = new PictureBox();
-            _agent.Location = new System.Drawing.Point((int)(offsetX + 32 * scaleFactor * (agentPos % _width - 1) + 2), (int)(32 * scaleFactor * (agentPos / _height) + 2));
+            int agentY = (agentPos % _height);
+            if (agentY == 0)
+                agentY = _height;
+            _agent.Location = new System.Drawing.Point((int)(offsetX + 32 * scaleFactor * ((agentPos - 1) / _width) + 2), (int)(32 * scaleFactor * (agentY - 1) + 2));
             _agent.Name = "agent";
             _agent.BackColor = Color.Transparent;
             _agent.Size = new System.Drawing.Size((int)(28 * scaleFactor), (int)(28 * scaleFactor));
@@ -51,6 +64,23 @@ namespace GoldDiggerGUI
             _agent.Image = GoldDiggerGUI.Properties.Resources.Hat_man;
             ((System.ComponentModel.ISupportInitialize)(_agent)).EndInit();
             this.Controls.Add(_agent);
+
+            for(int i = 1; i < positions.Length; i++)
+            {
+                PictureBox gold = new PictureBox();
+                int goldY = int.Parse(positions[i]) % (_height);
+                if (goldY == 0)
+                    goldY = _height;
+                gold.Location = new System.Drawing.Point((int)(offsetX + 32 * scaleFactor * ((int.Parse(positions[i]) - 1) / _width) + 2), (int)(32 * scaleFactor * (goldY - 1) + 2));
+                gold.Name = "gold" + i.ToString();
+                gold.Size = new System.Drawing.Size((int)(28 * scaleFactor), (int)(28 * scaleFactor));
+                gold.TabIndex = 0;
+                gold.TabStop = false;
+                gold.SizeMode = PictureBoxSizeMode.StretchImage;
+                gold.Image = GoldDiggerGUI.Properties.Resources.Grass;
+                ((System.ComponentModel.ISupportInitialize)(gold)).EndInit();
+                this.Controls.Add(gold);
+            }
 
             _sprites = new PictureBox[_width, _height];
 
@@ -122,6 +152,99 @@ namespace GoldDiggerGUI
             }
 
             ResumeLayout();
+            //var task = Task.Run(async () => await MoveRight());
+        }
+
+        void Move(object sender, EventArgs e)
+        {
+            _timerSteps -= 1;
+            _agent.Location = new System.Drawing.Point(_agent.Location.X + _xStep, _agent.Location.Y + _yStep);
+            if (_timerSteps <= 0)
+            {
+                Console.Write(_result[_resultIndex].ToString());
+                _movementTimer.Stop();
+                _resultIndex++;
+                if (_resultIndex < _result.Length)
+                    PlayAction(_result[_resultIndex]);
+            }
+        }
+
+        void MoveRight()
+        {
+            _timerSteps = 16;
+            _xStep = 2;
+            _yStep = 0;
+            _movementTimer.Enabled = true;
+            //_movementTimer.Tick += new System.EventHandler(Move);
+        }
+
+        void MoveLeft()
+        {
+            _timerSteps = 16;
+            _xStep = -2;
+            _yStep = 0;
+            _movementTimer.Enabled = true;
+            //_movementTimer.Tick += new System.EventHandler(Move);
+        }
+
+        void MoveUp()
+        {
+            _timerSteps = 16;
+            _xStep = 0;
+            _yStep = -2;
+            _movementTimer.Enabled = true;
+            //_movementTimer.Tick += new System.EventHandler(Move);
+        }
+
+        void MoveDown()
+        {
+            _timerSteps = 16;
+            _xStep = 0;
+            _yStep = 2;
+            _movementTimer.Enabled = true;
+            //_movementTimer.Tick += new System.EventHandler(Move);
+        }
+
+        private void GameBoard_Load(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void OnTimerEvent(object sender, EventArgs e)
+        {
+            _agent.Location = new System.Drawing.Point(_agent.Location.X + 2, _agent.Location.Y + 0); 
+        }
+
+        void PlayAction(int action)
+        {
+            switch (action)
+            {
+                case (int)AgentAction.Dig:
+
+                    break;
+                case (int)AgentAction.Down:
+                    MoveDown();
+                    break;
+                case (int)AgentAction.Left:
+                    MoveLeft();
+                    break;
+                case (int)AgentAction.Right:
+                    MoveRight();
+                    break;
+                case (int)AgentAction.Up:
+                    MoveUp();
+                    break;
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            _result = _solver.ValueIteration();
+            _resultIndex = 0;
+            for(int i = 0; i < _result.Length; i++)
+                Console.Write(_result[i].ToString() + " ");
+            _movementTimer.Tick += new System.EventHandler(Move);
+            PlayAction(_result[_resultIndex]);
         }
     }
 } // GoldDiggerGUI

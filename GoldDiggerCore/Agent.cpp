@@ -9,7 +9,7 @@ namespace GoldDiggerCore {
 		_currentPos = _options.agentStartPos;
 	}
 
-	AgentAction* Agent::ValueIteration(double gamma = 0.9) {
+	AgentAction* Agent::ValueIteration(double gamma) {
 		// Initialize the Values and Policy arrays
 		double* prevValues = new double[_options.n * _options.m]{};
 		const AgentAction AgentActions[] = 
@@ -64,7 +64,7 @@ namespace GoldDiggerCore {
 
 	}
 
-	AgentAction* Agent::PolicyIteration(double gamma = 0.9) {
+	AgentAction* Agent::PolicyIteration(double gamma) {
 		// Initialize the policy and values randomly
 		AgentAction* prevPolicy = new AgentAction[_options.n * _options.m];
 		for (unsigned int i = 0; i < _options.n * _options.m; ++i) {
