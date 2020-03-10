@@ -16,8 +16,10 @@ namespace GoldDiggerCore {
 		}
 
 		input >> _startPos;
+		--_startPos;	// Because the positions in input file are 1-based
 		unsigned int tmp;
 		while (input >> tmp) {
+			--tmp;		// Because the positions in input file are 1-based
 			_map[tmp].gold = 1;
 			// @TODO: Should I also make this a 'trap' block, e.g. make the other
 			// four actions impossible?

@@ -30,7 +30,7 @@ namespace GoldDiggerCore {
 						max = std::max(max, _map->ActionReward(i, action) + gamma * prevValues[_map->NextPosition(i, action)]);
 				}
 				if (max == -1)
-					continue;	// No actions possible
+					continue;	// No possible actions
 				newValues[i] = max;
 				if (std::abs(newValues[i] - prevValues[i]) > EPSILON) {
 					converged = false;
@@ -60,12 +60,13 @@ namespace GoldDiggerCore {
 			policy[i] = argmax;
 		}
 
+		delete[] prevValues;
 		return policy;
 
 	}
 
 	AgentAction* Agent::PolicyIteration(double gamma) {
-		// Initialize the policy and values randomly
+		// Initialize the policy randomly
 		AgentAction* prevPolicy = new AgentAction[_options.n * _options.m];
 		for (unsigned int i = 0; i < _options.n * _options.m; ++i) {
 			auto action = AgentAction(rand() % 5);
@@ -75,6 +76,8 @@ namespace GoldDiggerCore {
 				prevPolicy[i] = action;
 			}
 		}
+
+		// Initialize the values according to the policy
 		double* prevValues = new double[_options.n * _options.m]{};
 		for (unsigned int i = 0; i < _options.n * _options.m; ++i)
 			prevValues[i] = _map->ActionReward(i, prevPolicy[i])
@@ -113,16 +116,14 @@ namespace GoldDiggerCore {
 				max = -1;
 				for (auto action : AgentActions) {
 					if (_map->IsActionPossible(i, action)) {
-						temp = _map->ActionReward(i, action) + gamma * prevValues[_map->NextPosition(i, action)];
+						temp = _map->ActionReward(i, action)
+								+ gamma * prevValues[_map->NextPosition(i, action)];
 						if (temp > max) {
 							max = temp;
 							argmax = action;
 						}
 					}
 				}
-				if (max = -1)
-					continue;			// No actions possible
-
 				if (prevPolicy[i] != argmax)
 					policyConverged = false;
 				newPolicy[i] = argmax;
@@ -133,6 +134,7 @@ namespace GoldDiggerCore {
 		}
 		std::cout << "Policy Iteration converged after " << epoch << " epochs\n";
 
+		delete[] prevValues;
 		return prevPolicy;
 	}
 } // namespace GoldDiggerAgent
