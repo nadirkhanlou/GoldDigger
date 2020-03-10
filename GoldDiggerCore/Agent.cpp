@@ -14,7 +14,7 @@ namespace GoldDiggerCore {
 		double* prevValues = new double[_options.n * _options.m]{};
 		const AgentAction AgentActions[] = 
 				{ AgentAction::Dig, AgentAction::Up, AgentAction::Right,
-					AgentAction::Down, AgentAction::Left };
+					AgentAction::Down, AgentAction::Left, AgentAction::Rest };
 		bool converged = false;
 		unsigned int epoch = 0;
 		while (!converged) {
@@ -69,10 +69,10 @@ namespace GoldDiggerCore {
 		// Initialize the policy randomly
 		AgentAction* prevPolicy = new AgentAction[_options.n * _options.m];
 		for (unsigned int i = 0; i < _options.n * _options.m; ++i) {
-			auto action = AgentAction(rand() % 5);
+			auto action = AgentAction(rand() % 6);
 			prevPolicy[i] = action;
 			while (!_map->IsActionPossible(i, action)) {
-				action = AgentAction(rand() % 5);
+				action = AgentAction(rand() % 6);
 				prevPolicy[i] = action;
 			}
 		}
@@ -108,7 +108,7 @@ namespace GoldDiggerCore {
 			AgentAction* newPolicy = new AgentAction[_options.n * _options.m];
 			const AgentAction AgentActions[] =
 			{ AgentAction::Dig, AgentAction::Up, AgentAction::Right,
-				AgentAction::Down, AgentAction::Left };
+				AgentAction::Down, AgentAction::Left, AgentAction::Rest };
 			double max;
 			double temp;
 			AgentAction argmax;

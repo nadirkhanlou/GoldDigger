@@ -25,7 +25,6 @@ namespace GoldDiggerCore {
 
 		unsigned int GetCurrentPos() { return _currentPos; }
 		Block Sense() { return _map->Sense(_currentPos); }
-		std::pair<unsigned int, int> Act(AgentAction action) { return _map->ActionResult(_currentPos, action); }
 		//bool IsActionPossible(AgentAction action) { return _map->IsActionPossible(_currentPos, action); }
 		//unsigned int NextPosition(AgentAction action) { return _map->NextPosition(_currentPos, action); }
 		AgentAction* ValueIteration(double gamma = 0.9);

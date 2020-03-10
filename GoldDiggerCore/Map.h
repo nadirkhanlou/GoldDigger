@@ -45,7 +45,6 @@ namespace GoldDiggerCore {
 		bool IsActionPossible(unsigned int pos, AgentAction action);
 		std::pair<unsigned int, unsigned int> Get2DCoordinate(unsigned int pos);
 		unsigned int GetFlatCoordinate(unsigned int x, unsigned int y);
-		std::pair<unsigned int, int> ActionResult(unsigned int currentPos, AgentAction action);
 		unsigned int NextPosition(unsigned int pos, AgentAction action);
 		int ActionReward(unsigned int pos, AgentAction action);
 	};
