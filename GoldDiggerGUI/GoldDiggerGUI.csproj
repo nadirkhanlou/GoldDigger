@@ -94,9 +94,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Down.png" />
     <Content Include="Resources\Grass.png" />
     <Content Include="Resources\Hat_man.png" />
     <Content Include="Resources\horizontal_wall.png" />
+    <Content Include="Resources\Left.png" />
+    <Content Include="Resources\Right.png" />
+    <Content Include="Resources\Up.png" />
     <Content Include="Resources\vertical_wall.png" />
   </ItemGroup>
   <ItemGroup>

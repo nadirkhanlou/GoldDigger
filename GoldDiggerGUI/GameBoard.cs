@@ -26,6 +26,7 @@ namespace GoldDiggerGUI
         int _yStep;
         int[] _result;
         int _agentPos;
+        PictureBox[] _directions; 
         Timer _movementTimer = new Timer
         {
             Interval = 40
@@ -84,6 +85,7 @@ namespace GoldDiggerGUI
             }
 
             _sprites = new PictureBox[_width, _height];
+            _directions = new PictureBox[_width* _height];
 
             for (int i = 0; i < _width; i++)
             {
@@ -91,7 +93,18 @@ namespace GoldDiggerGUI
                 {
 
                     String[] block = inputLines[_width * i + j + 1].Split(' ');
-                    
+
+                    _directions[i * _width + j] = new PictureBox();
+                    _directions[i * _width + j].Location = new System.Drawing.Point((int)(offsetX + 32 * scaleFactor * i + 2), (int)(32 * scaleFactor * j + 2));
+                    _directions[i * _width + j].Name = "" + i.ToString() + "_" + j.ToString();
+                    _directions[i * _width + j].Size = new System.Drawing.Size((int)(28 * scaleFactor), (int)(28 * scaleFactor));
+                    _directions[i * _width + j].TabIndex = 0;
+                    _directions[i * _width + j].TabStop = false;
+                    _directions[i * _width + j].SizeMode = PictureBoxSizeMode.StretchImage;
+                    _directions[i * _width + j].Image = GoldDiggerGUI.Properties.Resources.horizontal_wall;
+                    _directions[i * _width + j].Visible = false;
+                    ((System.ComponentModel.ISupportInitialize)(_directions[i * _width + j])).EndInit();
+                    this.Controls.Add(_directions[i * _width + j]);
 
                     if (block[0].Trim() == "0")
                     {
@@ -241,13 +254,41 @@ namespace GoldDiggerGUI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            _result = _solver.PolicyIteration();
-            for(int i = 0; i < _result.Length; i++)
+            _result = _solver.ValueIteration();
+            for(int i = 0; i < _result.Length; ++i)
             {
                 Console.Write(i.ToString() + " " + Enum.GetName(typeof(AgentAction), _result[i]) + "\n");
+                switch (_result[i])
+                {
+                    case (int)AgentAction.Dig:
+
+                        break;
+                    case (int)AgentAction.Down:
+                        _directions[i].Image = GoldDiggerGUI.Properties.Resources.Down;
+                        break;
+                    case (int)AgentAction.Left:
+                        _directions[i].Image = GoldDiggerGUI.Properties.Resources.Left;
+                        break;
+                    case (int)AgentAction.Right:
+                        _directions[i].Image = GoldDiggerGUI.Properties.Resources.Right;
+                        break;
+                    case (int)AgentAction.Up:
+                        _directions[i].Image = GoldDiggerGUI.Properties.Resources.Up;
+                        break;
+                }
+                _directions[i].Visible = checkBox1.Checked;
             }
             _movementTimer.Tick += new System.EventHandler(Move);
             PlayAction(_result[_agentPos - 1]);
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            for (int i = 0; i < _directions.Length; ++i)
+            {
+                
+                _directions[i].Visible = checkBox1.Checked;
+            }
         }
     }
 } // GoldDiggerGUI
