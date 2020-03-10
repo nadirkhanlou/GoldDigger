@@ -5,7 +5,7 @@
 #include <algorithm>
 
 #include "Map.h"
-#include "../GoldDiggerGUI/AgentAction.cs"
+#include "..//GoldDiggerGUI/AgentAction.cs"
 #include "Options.h"
 
 #define EPSILON 0.001

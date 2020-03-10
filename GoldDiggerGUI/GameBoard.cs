@@ -259,7 +259,7 @@ namespace GoldDiggerGUI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            _result = _solver.ValueIteration();
+            _result = _solver.PolicyIteration();
             for(int i = 0; i < _result.Length; ++i)
             {
                 Console.Write(i.ToString() + " " + Enum.GetName(typeof(AgentAction), _result[i]) + "\n");

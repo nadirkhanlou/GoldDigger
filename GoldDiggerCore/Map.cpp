@@ -120,7 +120,7 @@ namespace GoldDiggerCore {
 		else if (action == AgentAction::Right)
 			return pos + _n;
 		else if (action == AgentAction::Down)
-			return pos + 1, 0;
+			return pos + 1;
 		else // action = Left
 			return pos - _n;
 	}

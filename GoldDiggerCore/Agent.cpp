@@ -103,7 +103,7 @@ namespace GoldDiggerCore {
 				delete[] prevValues;
 				prevValues = newValues;
 			}
-
+			
 			// Improve the current policy (Policy Improvement)
 			AgentAction* newPolicy = new AgentAction[_options.n * _options.m];
 			const AgentAction AgentActions[] =

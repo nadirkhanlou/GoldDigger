@@ -9,7 +9,7 @@ namespace GoldDigger {
 		AgentAction* actions = m_Instance->ValueIteration();
 		array<int>^ result = gcnew array<int>(m_Instance->Size().first * m_Instance->Size().second);
 		for (int i = 0; i < result->Length; ++i) {
-			result[i] = actions[i];
+			result[i] = (int)actions[i];
 		}
 		return result;
 	}
@@ -18,7 +18,7 @@ namespace GoldDigger {
 		AgentAction* actions = m_Instance->PolicyIteration();
 		array<int>^ result = gcnew array<int>(m_Instance->Size().first * m_Instance->Size().second);
 		for (int i = 0; i < result->Length; ++i) {
-			result[i] = actions[i];
+			result[i] = (int)actions[i];
 		}
 		return result;
 	}

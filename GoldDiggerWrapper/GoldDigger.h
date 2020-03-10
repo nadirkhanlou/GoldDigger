@@ -1,7 +1,7 @@
 #pragma once
 #include "ManagedObject.h"
 #include "../GoldDiggerCore/Controller.h"
-#include "../GoldDiggerGUI/AgentAction.cs"
+//#include "../GoldDiggerGUI/AgentAction.cs"
 
 using namespace GoldDiggerWrapper;
 using namespace GoldDiggerCore;
