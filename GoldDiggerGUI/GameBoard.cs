@@ -26,6 +26,7 @@ namespace GoldDiggerGUI
         int _yStep;
         int[] _result;
         int _agentPos;
+        double _scaleFactor;
         PictureBox[] _directions; 
         Timer _movementTimer = new Timer
         {
@@ -43,11 +44,15 @@ namespace GoldDiggerGUI
         public void GenerateGameBoard(string input)
         {
             int offsetX = 5;
-            int scaleFactor = 1;
+            _scaleFactor = 1;
+
             String[] inputLines = input.Split('\n');
             String[] sizes = inputLines[0].Split(' ');
             _height = int.Parse(sizes[0]);
             _width = int.Parse(sizes[1]);
+
+            if (_width > 10 || _height > 10)
+                _scaleFactor = .5f;
 
             String[] positions = inputLines[_height * _width + 1].Split(' ');
             int agentPos = int.Parse(positions[0]);
@@ -55,10 +60,10 @@ namespace GoldDiggerGUI
             int agentY = (agentPos % _height);
             if (agentY == 0)
                 agentY = _height;
-            _agent.Location = new System.Drawing.Point((int)(offsetX + 32 * scaleFactor * ((agentPos - 1) / _width) + 2), (int)(32 * scaleFactor * (agentY - 1) + 2));
+            _agent.Location = new System.Drawing.Point((int)(_scaleFactor * (offsetX + 32 * ((agentPos - 1) / _width) + 2)), (int)(_scaleFactor * (32 * (agentY - 1) + 2)));
             _agent.Name = "agent";
             _agent.BackColor = Color.Transparent;
-            _agent.Size = new System.Drawing.Size((int)(28 * scaleFactor), (int)(28 * scaleFactor));
+            _agent.Size = new System.Drawing.Size((int)(28 * _scaleFactor), (int)(28 * _scaleFactor));
             _agent.TabIndex = 0;
             _agent.TabStop = false;
             _agent.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -73,9 +78,9 @@ namespace GoldDiggerGUI
                 int goldY = int.Parse(positions[i]) % (_height);
                 if (goldY == 0)
                     goldY = _height;
-                gold.Location = new System.Drawing.Point((int)(offsetX + 32 * scaleFactor * ((int.Parse(positions[i]) - 1) / _width) + 2), (int)(32 * scaleFactor * (goldY - 1) + 2));
+                gold.Location = new System.Drawing.Point((int)(_scaleFactor * (offsetX + 32 * ((int.Parse(positions[i]) - 1) / _width) + 2)), (int)(_scaleFactor *(32 * (goldY - 1) + 2)));
                 gold.Name = "gold" + i.ToString();
-                gold.Size = new System.Drawing.Size((int)(28 * scaleFactor), (int)(28 * scaleFactor));
+                gold.Size = new System.Drawing.Size((int)(28 * _scaleFactor), (int)(28 * _scaleFactor));
                 gold.TabIndex = 0;
                 gold.TabStop = false;
                 gold.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -95,9 +100,9 @@ namespace GoldDiggerGUI
                     String[] block = inputLines[_width * i + j + 1].Split(' ');
 
                     _directions[i * _width + j] = new PictureBox();
-                    _directions[i * _width + j].Location = new System.Drawing.Point((int)(offsetX + 32 * scaleFactor * i + 2), (int)(32 * scaleFactor * j + 2));
+                    _directions[i * _width + j].Location = new System.Drawing.Point((int)(_scaleFactor * (offsetX + 32 * i + 2)), (int)(_scaleFactor * (32 * j + 2)));
                     _directions[i * _width + j].Name = "" + i.ToString() + "_" + j.ToString();
-                    _directions[i * _width + j].Size = new System.Drawing.Size((int)(28 * scaleFactor), (int)(28 * scaleFactor));
+                    _directions[i * _width + j].Size = new System.Drawing.Size((int)(28 * _scaleFactor), (int)(28 * _scaleFactor));
                     _directions[i * _width + j].TabIndex = 0;
                     _directions[i * _width + j].TabStop = false;
                     _directions[i * _width + j].SizeMode = PictureBoxSizeMode.StretchImage;
@@ -109,9 +114,9 @@ namespace GoldDiggerGUI
                     if (block[0].Trim() == "0")
                     {
                         PictureBox up = new PictureBox();
-                        up.Location = new System.Drawing.Point((int)(offsetX + 32 * scaleFactor * i), (int)(32 * scaleFactor * j));
+                        up.Location = new System.Drawing.Point((int)(_scaleFactor * (offsetX + 32 * i)), (int)(_scaleFactor * (32 * j)));
                         up.Name = "up +" + i.ToString() + "_" + j.ToString();
-                        up.Size = new System.Drawing.Size((int)(32 * scaleFactor), (int)(2 * scaleFactor));
+                        up.Size = new System.Drawing.Size((int)(32 * _scaleFactor), (int)(2 * _scaleFactor));
                         up.TabIndex = 0;
                         up.TabStop = false;
                         up.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -123,9 +128,9 @@ namespace GoldDiggerGUI
                     if (block[1].Trim() == "0")
                     {
                         PictureBox right = new PictureBox();
-                        right.Location = new System.Drawing.Point((int)(offsetX + 32 * scaleFactor * i + 32), (int)(32 * scaleFactor * j));
+                        right.Location = new System.Drawing.Point((int)(_scaleFactor * (offsetX + 32 * i + 32)), (int)(_scaleFactor * (32 * j)));
                         right.Name = "right +" + i.ToString() + "_" + j.ToString();
-                        right.Size = new System.Drawing.Size((int)(2 * scaleFactor), (int)(32 * scaleFactor));
+                        right.Size = new System.Drawing.Size((int)(2 * _scaleFactor), (int)(32 * _scaleFactor));
                         right.TabIndex = 0;
                         right.TabStop = false;
                         right.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -137,9 +142,9 @@ namespace GoldDiggerGUI
                     if (block[2].Trim() == "0")
                     {
                         PictureBox down = new PictureBox();
-                        down.Location = new System.Drawing.Point((int)(offsetX + 32 * scaleFactor * i), (int)(32 * scaleFactor * j + 32));
+                        down.Location = new System.Drawing.Point((int)(_scaleFactor * (offsetX + 32 * i)), (int)(_scaleFactor * (32 * j + 32)));
                         down.Name = "down +" + i.ToString() + "_" + j.ToString();
-                        down.Size = new System.Drawing.Size((int)(32 * scaleFactor), (int)(2 * scaleFactor));
+                        down.Size = new System.Drawing.Size((int)(32 * _scaleFactor), (int)(2 * _scaleFactor));
                         down.TabIndex = 0;
                         down.TabStop = false;
                         down.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -151,9 +156,9 @@ namespace GoldDiggerGUI
                     if (block[3].Trim() == "0")
                     {
                         PictureBox left = new PictureBox();
-                        left.Location = new System.Drawing.Point((int)(offsetX + 32 * scaleFactor * i), (int)(32 * scaleFactor * j));
+                        left.Location = new System.Drawing.Point((int)(_scaleFactor * (offsetX + 32 * i)), (int)(_scaleFactor * (32 * j)));
                         left.Name = "left +" + i.ToString() + "_" + j.ToString();
-                        left.Size = new System.Drawing.Size((int)(2 * scaleFactor), (int)(32 * scaleFactor));
+                        left.Size = new System.Drawing.Size((int)(2 * _scaleFactor), (int)(32 * _scaleFactor));
                         left.TabIndex = 0;
                         left.TabStop = false;
                         left.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -172,7 +177,7 @@ namespace GoldDiggerGUI
         void Move(object sender, EventArgs e)
         {
             _timerSteps -= 1;
-            _agent.Location = new System.Drawing.Point(_agent.Location.X + _xStep, _agent.Location.Y + _yStep);
+            _agent.Location = new System.Drawing.Point((int)(_agent.Location.X + _xStep * _scaleFactor), _agent.Location.Y + (int)(_yStep * _scaleFactor));
             if (_timerSteps <= 0)
             {
                 _movementTimer.Stop();
