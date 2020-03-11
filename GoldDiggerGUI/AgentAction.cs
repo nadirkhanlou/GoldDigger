@@ -8,7 +8,7 @@ namespace GoldDiggerActions
 #endif
 
 
-enum AgentAction { Dig, Up, Right, Down, Left, Rest };
+enum AgentAction { Dig, Up, Right, Down, Left };
 
 #if !__LINE__
 } // GoldDiggerCore

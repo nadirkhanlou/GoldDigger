@@ -14,7 +14,7 @@ namespace GoldDiggerCore {
 		double* prevValues = new double[_options.n * _options.m]{};
 		const AgentAction AgentActions[] = 
 				{ AgentAction::Dig, AgentAction::Up, AgentAction::Right,
-					AgentAction::Down, AgentAction::Left, AgentAction::Rest };
+					AgentAction::Down, AgentAction::Left };
 		bool converged = false;
 		unsigned int epoch = 0;
 		while (!converged) {
@@ -26,8 +26,7 @@ namespace GoldDiggerCore {
 			for (unsigned int i = 0; i < _options.n * _options.m; ++i) {
 				max = -1;
 				for (auto action : AgentActions) {
-					if (_map->IsActionPossible(i, action))
-						max = std::max(max, _map->ActionReward(i, action) + gamma * prevValues[_map->NextPosition(i, action)]);
+					max = std::max(max, _map->ActionReward(i, action) + gamma * prevValues[_map->NextPosition(i, action)]);
 				}
 				if (max == -1)
 					continue;	// No possible actions
@@ -49,14 +48,13 @@ namespace GoldDiggerCore {
 		for (unsigned int i = 0; i < _options.n * _options.m; ++i) {
 			max = -1;
 			for (auto action : AgentActions) {
-				if (_map->IsActionPossible(i, action)) {
-					tmp = prevValues[_map->NextPosition(i, action)];
-					if (tmp > max) {
-						max = tmp;
-						argmax = action;
-					}
+				tmp = prevValues[_map->NextPosition(i, action)];
+				if (tmp > max) {
+					max = tmp;
+					argmax = action;
 				}
 			}
+			if (max = -1)
 			policy[i] = argmax;
 		}
 
@@ -69,12 +67,12 @@ namespace GoldDiggerCore {
 		// Initialize the policy randomly
 		AgentAction* prevPolicy = new AgentAction[_options.n * _options.m];
 		for (unsigned int i = 0; i < _options.n * _options.m; ++i) {
-			auto action = AgentAction(rand() % 6);
+			auto action = AgentAction(rand() % 5);
 			prevPolicy[i] = action;
-			while (!_map->IsActionPossible(i, action)) {
-				action = AgentAction(rand() % 6);
+			/*while (!_map->IsActionPossible(i, action)) {
+				action = AgentAction(rand() % 5);
 				prevPolicy[i] = action;
-			}
+			}*/
 		}
 
 		// Initialize the values according to the policy
@@ -108,22 +106,21 @@ namespace GoldDiggerCore {
 			AgentAction* newPolicy = new AgentAction[_options.n * _options.m];
 			const AgentAction AgentActions[] =
 			{ AgentAction::Dig, AgentAction::Up, AgentAction::Right,
-				AgentAction::Down, AgentAction::Left, AgentAction::Rest };
+				AgentAction::Down, AgentAction::Left };
 			double max;
 			double temp;
 			AgentAction argmax;
 			for (unsigned int i = 0; i < _options.n * _options.m; ++i) {
 				max = -1;
 				for (auto action : AgentActions) {
-					if (_map->IsActionPossible(i, action)) {
-						temp = _map->ActionReward(i, action)
-								+ gamma * prevValues[_map->NextPosition(i, action)];
-						if (temp > max) {
-							max = temp;
-							argmax = action;
-						}
+					temp = _map->ActionReward(i, action)
+						+ gamma * prevValues[_map->NextPosition(i, action)];
+					if (temp > max) {
+						max = temp;
+						argmax = action;
 					}
 				}
+				
 				if (prevPolicy[i] != argmax)
 					policyConverged = false;
 				newPolicy[i] = argmax;
