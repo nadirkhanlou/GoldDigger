@@ -28,8 +28,6 @@ namespace GoldDiggerCore {
 				for (auto action : AgentActions) {
 					max = std::max(max, _map->ActionReward(i, action) + gamma * prevValues[_map->NextPosition(i, action)]);
 				}
-				if (max == -1)
-					continue;	// No possible actions
 				newValues[i] = max;
 				if (std::abs(newValues[i] - prevValues[i]) > EPSILON) {
 					converged = false;
@@ -66,14 +64,8 @@ namespace GoldDiggerCore {
 	AgentAction* Agent::PolicyIteration(double gamma) {
 		// Initialize the policy randomly
 		AgentAction* prevPolicy = new AgentAction[_options.n * _options.m];
-		for (unsigned int i = 0; i < _options.n * _options.m; ++i) {
-			auto action = AgentAction(rand() % 5);
-			prevPolicy[i] = action;
-			/*while (!_map->IsActionPossible(i, action)) {
-				action = AgentAction(rand() % 5);
-				prevPolicy[i] = action;
-			}*/
-		}
+		for (unsigned int i = 0; i < _options.n * _options.m; ++i)
+			prevPolicy[i] = AgentAction(rand() % 5);
 
 		// Initialize the values according to the policy
 		double* prevValues = new double[_options.n * _options.m]{};

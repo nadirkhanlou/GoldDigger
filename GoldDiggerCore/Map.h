@@ -42,7 +42,6 @@ namespace GoldDiggerCore {
 		~Map();
 
 		Block Sense(unsigned int pos);
-		bool IsActionPossible(unsigned int pos, AgentAction action);
 		std::pair<unsigned int, unsigned int> Get2DCoordinate(unsigned int pos);
 		unsigned int GetFlatCoordinate(unsigned int x, unsigned int y);
 		unsigned int NextPosition(unsigned int pos, AgentAction action);

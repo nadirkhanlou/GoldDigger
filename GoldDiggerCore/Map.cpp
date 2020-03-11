@@ -76,15 +76,6 @@ namespace GoldDiggerCore {
 		return _map[pos];
 	}
 
-	bool Map::IsActionPossible(unsigned int pos, AgentAction action) {
-		assert(pos < _n * _m);
-		if (action == AgentAction::Dig) return _map[pos].gold;
-		else if (action == AgentAction::Up) return _map[pos].up;
-		else if (action == AgentAction::Right) return _map[pos].right;
-		else if (action == AgentAction::Down) return _map[pos].down;
-		else return _map[pos].left;		// action = Left
-	}
-
 	std::pair<unsigned int, unsigned int> Map::Get2DCoordinate(unsigned int pos) {
 		assert(pos < _n * _m);
 		return std::make_pair(pos % _n, pos / _n);
@@ -113,7 +104,6 @@ namespace GoldDiggerCore {
 
 	int Map::ActionReward(unsigned int pos, AgentAction action) {
 		assert(pPos < _n * _m);
-		assert(IsActionPossible(pos, action));
 		if (action == AgentAction::Dig && _map[pos].gold)
 			return GOAL_SCORE;
 		else
