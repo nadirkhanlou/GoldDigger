@@ -84,7 +84,7 @@ namespace GoldDiggerGUI
                 gold.TabIndex = 0;
                 gold.TabStop = false;
                 gold.SizeMode = PictureBoxSizeMode.StretchImage;
-                gold.Image = GoldDiggerGUI.Properties.Resources.Grass;
+                gold.Image = GoldDiggerGUI.Properties.Resources.Gold;
                 ((System.ComponentModel.ISupportInitialize)(gold)).EndInit();
                 this.Controls.Add(gold);
             }
@@ -266,7 +266,8 @@ namespace GoldDiggerGUI
                 switch (_result[i])
                 {
                     case (int)AgentAction.Dig:
-
+                        _directions[i].Image = GoldDiggerGUI.Properties.Resources.Dig;
+                        _directions[i].BringToFront();
                         break;
                     case (int)AgentAction.Down:
                         _directions[i].Image = GoldDiggerGUI.Properties.Resources.Down;
@@ -281,6 +282,7 @@ namespace GoldDiggerGUI
                         _directions[i].Image = GoldDiggerGUI.Properties.Resources.Up;
                         break;
                 }
+                _agent.BringToFront();
                 _directions[i].Visible = checkBox1.Checked;
             }
             _movementTimer.Tick += new System.EventHandler(Move);

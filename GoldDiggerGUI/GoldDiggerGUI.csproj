@@ -94,7 +94,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Dig.png" />
     <Content Include="Resources\Down.png" />
+    <Content Include="Resources\Gold.png" />
     <Content Include="Resources\Grass.png" />
     <Content Include="Resources\Hat_man.png" />
     <Content Include="Resources\horizontal_wall.png" />
