@@ -239,9 +239,9 @@ namespace GoldDiggerGUI
         {
             switch (action)
             {
-                case (int)AgentAction.Dig:
+                //case (int)AgentAction.Dig:
 
-                    break;
+                //    break;
                 case (int)AgentAction.Down:
                     MoveDown();
                     break;
@@ -265,10 +265,10 @@ namespace GoldDiggerGUI
                 Console.Write(i.ToString() + " " + Enum.GetName(typeof(AgentAction), _result[i]) + "\n");
                 switch (_result[i])
                 {
-                    case (int)AgentAction.Dig:
-                        _directions[i].Image = GoldDiggerGUI.Properties.Resources.Dig;
-                        _directions[i].BringToFront();
-                        break;
+                    //case (int)AgentAction.Dig:
+                    //    _directions[i].Image = GoldDiggerGUI.Properties.Resources.Dig;
+                    //    _directions[i].BringToFront();
+                    //    break;
                     case (int)AgentAction.Down:
                         _directions[i].Image = GoldDiggerGUI.Properties.Resources.Down;
                         break;
@@ -306,9 +306,9 @@ namespace GoldDiggerGUI
                 Console.Write(i.ToString() + " " + Enum.GetName(typeof(AgentAction), _result[i]) + "\n");
                 switch (_result[i])
                 {
-                    case (int)AgentAction.Dig:
+                    //case (int)AgentAction.Dig:
 
-                        break;
+                    //    break;
                     case (int)AgentAction.Down:
                         _directions[i].Image = GoldDiggerGUI.Properties.Resources.Down;
                         break;
