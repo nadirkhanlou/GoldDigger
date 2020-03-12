@@ -35,6 +35,7 @@
             this.PolicyValueIterationPanel = new System.Windows.Forms.Panel();
             this.qLearningPanel = new System.Windows.Forms.Panel();
             this.button3 = new System.Windows.Forms.Button();
+            this.qTable = new System.Windows.Forms.Panel();
             this.PolicyValueIterationPanel.SuspendLayout();
             this.qLearningPanel.SuspendLayout();
             this.SuspendLayout();
@@ -95,10 +96,11 @@
             // 
             // qLearningPanel
             // 
+            this.qLearningPanel.Controls.Add(this.qTable);
             this.qLearningPanel.Controls.Add(this.button3);
-            this.qLearningPanel.Location = new System.Drawing.Point(563, 200);
+            this.qLearningPanel.Location = new System.Drawing.Point(563, 66);
             this.qLearningPanel.Name = "qLearningPanel";
-            this.qLearningPanel.Size = new System.Drawing.Size(200, 115);
+            this.qLearningPanel.Size = new System.Drawing.Size(200, 359);
             this.qLearningPanel.TabIndex = 5;
             this.qLearningPanel.Visible = false;
             // 
@@ -111,6 +113,14 @@
             this.button3.Text = "Q learning acttion";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // qTable
+            // 
+            this.qTable.AutoScroll = true;
+            this.qTable.Location = new System.Drawing.Point(12, 32);
+            this.qTable.Name = "qTable";
+            this.qTable.Size = new System.Drawing.Size(160, 311);
+            this.qTable.TabIndex = 1;
             // 
             // GameBoard
             // 
@@ -139,5 +149,6 @@
         private System.Windows.Forms.Panel PolicyValueIterationPanel;
         private System.Windows.Forms.Panel qLearningPanel;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Panel qTable;
     }
 }

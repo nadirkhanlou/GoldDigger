@@ -31,6 +31,7 @@ namespace GoldDiggerGUI
         bool _qLearningFlag;
         List<int> _golds;
         int _offsetX;
+        Label[,] qTableArray;
         Timer _movementTimer = new Timer
         {
             Interval = 40
@@ -62,9 +63,9 @@ namespace GoldDiggerGUI
             String[] positions = inputLines[_height * _width + 1].Split(' ');
             int agentPos = int.Parse(positions[0]);
             _agent = new PictureBox();
-            int agentY = (agentPos % _width);
+            int agentY = (agentPos % _height);
             if (agentY == 0)
-                agentY = _width;
+                agentY = _height;
             _agent.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * ((agentPos - 1) / _height) + 2)), (int)(_scaleFactor * (32 * (agentY - 1) + 2)));
             _agent.Name = "agent";
             _agent.BackColor = Color.Transparent;
@@ -81,9 +82,9 @@ namespace GoldDiggerGUI
             {
                 PictureBox gold = new PictureBox();
                 _golds.Add(int.Parse(positions[i]));
-                int goldY = int.Parse(positions[i]) % (_width);
+                int goldY = int.Parse(positions[i]) % (_height);
                 if (goldY == 0)
-                    goldY = _width;
+                    goldY = _height;
                 gold.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * ((int.Parse(positions[i]) - 1) / _height) + 2)), (int)(_scaleFactor *(32 * (goldY - 1) + 2)));
                 gold.Name = "gold" + i.ToString();
                 gold.Size = new System.Drawing.Size((int)(28 * _scaleFactor), (int)(28 * _scaleFactor));
@@ -176,6 +177,21 @@ namespace GoldDiggerGUI
                 }
             }
 
+            qTableArray = new Label[_width * _height, 5];
+            for (int i = 0; i < _width * _height; ++i)
+            {
+                qTableArray[i, 0] = new Label();
+                qTableArray[i, 0].Parent = qTable;
+                qTableArray[i, 0].Location = new System.Drawing.Point(qLearningPanel.Location.X, qLearningPanel.Location.Y + i * 30);
+                qTableArray[i, 0].Text = (i + 1).ToString();
+                this.Controls.Add(qTableArray[i, 0]);
+            }
+            qTable.AutoScroll = false;
+            qTable.HorizontalScroll.Enabled = false;
+            qTable.HorizontalScroll.Visible = false;
+            qTable.HorizontalScroll.Maximum = 0;
+            qTable.AutoScroll = true;
+
             ResumeLayout();
             //var task = Task.Run(async () => await MoveRight());
         }
@@ -187,8 +203,10 @@ namespace GoldDiggerGUI
             if (_timerSteps <= 0)
             {
                 _movementTimer.Stop();
-                if(!_qLearningFlag)
-                    PlayAction(_result[_agentPos - 1]);
+                if (!_qLearningFlag) {
+                    if (!_golds.Contains(_agentPos))
+                        PlayAction(_result[_agentPos - 1]);
+                }
                 else if (!_golds.Contains(_agentPos))
                 {
                     QLearningAct();
@@ -375,7 +393,9 @@ namespace GoldDiggerGUI
             {
                 _agentPos = _solver.AgentRandomPosition() + 1;
                 int agentY = (_agentPos % _height);
-                _agent.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * ((_agentPos - 1) / _width) + 2)), (int)(_scaleFactor * (32 * (agentY - 1) + 2)));
+                if (agentY == 0)
+                    agentY = _height;
+                _agent.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * ((_agentPos - 1) / _height) + 2)), (int)(_scaleFactor * (32 * (agentY - 1) + 2)));
             }
             QLearningAct();
         }
