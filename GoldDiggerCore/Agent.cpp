@@ -2,6 +2,9 @@
 
 namespace GoldDiggerCore {
 
+	const AgentAction AgentActions[] = {AgentAction::Up, AgentAction::Right,
+										AgentAction::Down, AgentAction::Left };
+
 	Agent::Agent(Map* map)
 		: _map(map),
 		_options(Options(*map))
@@ -12,9 +15,6 @@ namespace GoldDiggerCore {
 	AgentAction* Agent::ValueIteration(double gamma) {
 		// Initialize the Values and Policy arrays
 		double* prevValues = new double[_options.n * _options.m]{};
-		const AgentAction AgentActions[] = 
-				{ AgentAction::Dig, AgentAction::Up, AgentAction::Right,
-					AgentAction::Down, AgentAction::Left };
 		bool converged = false;
 		unsigned int epoch = 0;
 		while (!converged) {
@@ -63,6 +63,7 @@ namespace GoldDiggerCore {
 
 	AgentAction* Agent::PolicyIteration(double gamma) {
 		// Initialize the policy randomly
+		srand(time(0));
 		AgentAction* prevPolicy = new AgentAction[_options.n * _options.m];
 		for (unsigned int i = 0; i < _options.n * _options.m; ++i)
 			prevPolicy[i] = AgentAction(rand() % 5);
@@ -96,9 +97,6 @@ namespace GoldDiggerCore {
 			
 			// Improve the current policy (Policy Improvement)
 			AgentAction* newPolicy = new AgentAction[_options.n * _options.m];
-			const AgentAction AgentActions[] =
-			{ AgentAction::Dig, AgentAction::Up, AgentAction::Right,
-				AgentAction::Down, AgentAction::Left };
 			double max;
 			double temp;
 			AgentAction argmax;

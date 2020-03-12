@@ -88,9 +88,7 @@ namespace GoldDiggerCore {
 
 	unsigned int Map::NextPosition(unsigned int pos, AgentAction action) {
 		assert(pos < _n * _m);
-		if (action == AgentAction::Dig)
-			return pos;
-		else if (action == AgentAction::Up && _map[pos].up)
+		if (action == AgentAction::Up && _map[pos].up)
 			return pos - 1;
 		else if (action == AgentAction::Right && _map[pos].right)
 			return pos + _n;
@@ -104,7 +102,7 @@ namespace GoldDiggerCore {
 
 	int Map::ActionReward(unsigned int pos, AgentAction action) {
 		assert(pPos < _n * _m);
-		if (action == AgentAction::Dig && _map[pos].gold)
+		if (_map[NextPosition(pos, action)].gold)
 			return GOAL_SCORE;
 		else
 			return 0;

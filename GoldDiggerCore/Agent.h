@@ -3,6 +3,7 @@
 #include <math.h>
 #include <utility>
 #include <algorithm>
+#include <time.h>
 
 #include "Map.h"
 #include "..//GoldDiggerGUI/AgentAction.cs"
