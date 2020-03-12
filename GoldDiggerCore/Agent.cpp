@@ -156,7 +156,6 @@ namespace GoldDiggerCore {
 					argmax = action;
 				}
 			}
-			if (max = -1)
 			policy[i] = argmax;
 		}
 
@@ -167,7 +166,6 @@ namespace GoldDiggerCore {
 
 	AgentAction* Agent::PolicyIteration(double gamma) {
 		// Initialize the policy randomly
-		srand(time(0));
 		AgentAction* prevPolicy = new AgentAction[_options.n * _options.m];
 		for (unsigned int i = 0; i < _options.n * _options.m; ++i)
 			prevPolicy[i] = AgentAction(rand() % 4);
@@ -255,6 +253,8 @@ namespace GoldDiggerCore {
 		_Q[_currentPos][selectedAction] = max;
 
 		_currentPos = nextPos;
+
+		std::cout << "Chose action " << selectedAction << " going to " << nextPos << "\n";
 
 		delete[] probDist;
 		return selectedAction;
