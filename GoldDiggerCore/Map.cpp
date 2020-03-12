@@ -113,14 +113,14 @@ namespace GoldDiggerCore {
 	void Map::MarkAsAccessible(unsigned int pos)
 	{
 		_goldAccessPartition[pos] = true;
-		if (_map[pos].up && !_goldAccessPartition[pos - _n])
-			MarkAsAccessible(pos - _n);
-		if (_map[pos].down && !_goldAccessPartition[pos + _n])
-			MarkAsAccessible(pos + _n);
-		if (_map[pos].right && !_goldAccessPartition[pos + 1])
-			MarkAsAccessible(pos + 1);
-		if (_map[pos].left && !_goldAccessPartition[pos - 1])
+		if (_map[pos].up && !_goldAccessPartition[pos - 1])
 			MarkAsAccessible(pos - 1);
+		if (_map[pos].down && !_goldAccessPartition[pos + 1])
+			MarkAsAccessible(pos + 1);
+		if (_map[pos].right && !_goldAccessPartition[pos + _m])
+			MarkAsAccessible(pos + _m);
+		if (_map[pos].left && !_goldAccessPartition[pos - _m])
+			MarkAsAccessible(pos - _m);
 	}
 
 } // namespace GoldDiggerCore
