@@ -8,16 +8,15 @@ namespace GoldDiggerCore {
 		input >> _n >> _m;
 
 		_map = new Block[_n * _m];
+		_goldAccessPartition = new bool[_n * _m];
 
 		bool u, r, d, l;
 		for (unsigned int i = 0; i < _n * _m; ++i) {
 			input >> u >> r >> d >> l;
 			_map[i] = Block(u, r, d, l);
-		}
-
-		_goldAccessPartition = new bool[_n * _m];
-		for (int i = 0; i < _n * _m; ++i)
 			_goldAccessPartition[i] = false;
+		}
+			
 
 		input >> _startPos;
 		--_startPos;	// Because the positions in input file are 1-based
@@ -25,16 +24,17 @@ namespace GoldDiggerCore {
 		while (input >> tmp) {
 			--tmp;		// Because the positions in input file are 1-based
 			_map[tmp].gold = 1;
+			MarkAsAccessible(tmp);
 			// @TODO: Should I also make this a 'trap' block, e.g. make the other
 			// four actions impossible?
 			_map[tmp].up = _map[tmp].right = _map[tmp].down = _map[tmp].left = 0;
 
-			MarkAsAccessible(tmp);
 		}
 	}
 
 	Map::~Map() {
 		delete[] _map;
+		delete[] _goldAccessPartition;
 	}
 
 	Map::Map(const Map& other)
@@ -42,8 +42,11 @@ namespace GoldDiggerCore {
 		_m(other._m),
 		_startPos(other._startPos) {
 		_map = new Block[_n * _m];
-		for (unsigned int i = 0; i < _n * _m; ++i)
+		_goldAccessPartition = new bool[_n * _m];
+		for (unsigned int i = 0; i < _n * _m; ++i) {
 			_map[i] = other._map[i];
+			_goldAccessPartition[i] = other._goldAccessPartition[i];
+		}
 	}
 
 	Map::Map(Map&& other)
@@ -51,7 +54,9 @@ namespace GoldDiggerCore {
 		_m(other._m),
 		_startPos(other._startPos) {
 		_map = other._map;
+		_goldAccessPartition = other._goldAccessPartition;
 		other._map = nullptr;
+		other._goldAccessPartition = nullptr;
 	}
 
 	Map& Map::operator=(const Map& other) {
@@ -59,9 +64,13 @@ namespace GoldDiggerCore {
 		_m = other._m;
 		_startPos = other._startPos;
 		delete[] _map;
+		delete[] _goldAccessPartition;
 		_map = new Block[_n * _m];
-		for (unsigned int i = 0; i < _n * _m; ++i)
+		_goldAccessPartition = new bool[_n * _m];
+		for (unsigned int i = 0; i < _n * _m; ++i) {
 			_map[i] = other._map[i];
+			_goldAccessPartition[i] = other._goldAccessPartition[i];
+		}
 
 		return *this;
 	}
@@ -71,8 +80,11 @@ namespace GoldDiggerCore {
 		_m = other._m;
 		_startPos = other._startPos;
 		delete[] _map;
+		delete[] _goldAccessPartition;
 		_map = other._map;
+		_goldAccessPartition = other._goldAccessPartition;
 		other._map = nullptr;
+		other._goldAccessPartition = nullptr;
 
 		return *this;
 	}
@@ -117,14 +129,14 @@ namespace GoldDiggerCore {
 	void Map::MarkAsAccessible(unsigned int pos)
 	{
 		_goldAccessPartition[pos] = true;
-		if (_map[pos].up && !_goldAccessPartition[pos - 1])
-			MarkAsAccessible(pos - 1);
-		if (_map[pos].down && !_goldAccessPartition[pos + 1])
-			MarkAsAccessible(pos + 1);
-		if (_map[pos].right && !_goldAccessPartition[pos + _m])
-			MarkAsAccessible(pos + _m);
-		if (_map[pos].left && !_goldAccessPartition[pos - _m])
-			MarkAsAccessible(pos - _m);
+		if (_map[pos].up && !_goldAccessPartition[NextPosition(pos, AgentAction::Up)])
+			MarkAsAccessible(NextPosition(pos, AgentAction::Up));
+		if (_map[pos].down && !_goldAccessPartition[NextPosition(pos, AgentAction::Down)])
+			MarkAsAccessible(NextPosition(pos, AgentAction::Down));
+		if (_map[pos].right && !_goldAccessPartition[NextPosition(pos, AgentAction::Right)])
+			MarkAsAccessible(NextPosition(pos, AgentAction::Right));
+		if (_map[pos].left && !_goldAccessPartition[NextPosition(pos, AgentAction::Left)])
+			MarkAsAccessible(NextPosition(pos, AgentAction::Left));
 	}
 
 } // namespace GoldDiggerCore

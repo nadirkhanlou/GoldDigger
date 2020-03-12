@@ -15,5 +15,6 @@ namespace GoldDigger {
 		GoldDiggerSolver(String^ path);
 		array<int>^ ValueIteration();
 		array<int>^ PolicyIteration();
+		int QLearningAct();
 	};
 } // GoldDigger

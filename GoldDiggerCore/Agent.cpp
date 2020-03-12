@@ -61,9 +61,12 @@ namespace GoldDiggerCore {
 		return *this;
 	}
 	Agent::~Agent() {
-		for (unsigned int i = 0; i < _options.n * _options.m; ++i)
-			delete[] _Q[i];
-		delete[] _Q;
+		/*for (unsigned int i = 0; i < _options.n * _options.m; ++i) {
+			if(_Q[i] != nullptr)
+				delete[] _Q[i];
+		}*/
+		if(_Q != nullptr)
+			delete[] _Q;
 	}
 
 	void Agent::PrintQ() {
@@ -226,7 +229,7 @@ namespace GoldDiggerCore {
 		return prevPolicy;
 	}
 
-	unsigned int Agent::QLearningAct(double gamma) {
+	AgentAction Agent::QLearningAct(double gamma) {
 		// If _Q is not initialized, initialize it first
 		if (_Q == nullptr) {
 			_Q = new double* [_options.n * _options.m];
@@ -254,6 +257,6 @@ namespace GoldDiggerCore {
 		_currentPos = nextPos;
 
 		delete[] probDist;
-		return _currentPos;
+		return selectedAction;
 	}
 } // namespace GoldDiggerAgent

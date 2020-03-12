@@ -15,8 +15,12 @@ namespace GoldDiggerCore {
 	{
 		return _agent.PolicyIteration();
 	}
+	AgentAction Controller::QLearningAct()
+	{
+		return _agent.QLearningAct();
+	}
 	std::pair<int, int> Controller::Size()
 	{
-		return std::make_pair(_agent.GetOption().n, _agent.GetOption().m);
+		return std::make_pair(_agent.GetOptions().n, _agent.GetOptions().m);
 	}
 } // namespace goldDiggerCore

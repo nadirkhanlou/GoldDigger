@@ -41,7 +41,7 @@ namespace GoldDiggerCore {
 		//unsigned int NextPosition(AgentAction action) { return _map->NextPosition(_currentPos, action); }
 		AgentAction* ValueIteration(double gamma = 0.9);
 		AgentAction* PolicyIteration(double gamma = 0.9);
-		unsigned int QLearningAct(double gamma = 0.9);
+		AgentAction QLearningAct(double gamma = 0.9);
 
 	};
 } // namespace goldDiggerAgent

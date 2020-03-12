@@ -27,7 +27,8 @@ namespace GoldDiggerGUI
         int[] _result;
         int _agentPos;
         double _scaleFactor;
-        PictureBox[] _directions; 
+        PictureBox[] _directions;
+        bool _qLearningFlag;
         Timer _movementTimer = new Timer
         {
             Interval = 40
@@ -181,7 +182,8 @@ namespace GoldDiggerGUI
             if (_timerSteps <= 0)
             {
                 _movementTimer.Stop();
-                PlayAction(_result[_agentPos - 1]);
+                if(!_qLearningFlag)
+                    PlayAction(_result[_agentPos - 1]);
             }
         }
 
@@ -227,7 +229,7 @@ namespace GoldDiggerGUI
 
         private void GameBoard_Load(object sender, EventArgs e)
         {
-            
+            _movementTimer.Tick += new System.EventHandler(Move);
         }
 
         private void OnTimerEvent(object sender, EventArgs e)
@@ -260,7 +262,8 @@ namespace GoldDiggerGUI
         private void button1_Click(object sender, EventArgs e)
         {
             _result = _solver.PolicyIteration();
-            for(int i = 0; i < _result.Length; ++i)
+            _qLearningFlag = false;
+            for (int i = 0; i < _result.Length; ++i)
             {
                 Console.Write(i.ToString() + " " + Enum.GetName(typeof(AgentAction), _result[i]) + "\n");
                 switch (_result[i])
@@ -285,7 +288,6 @@ namespace GoldDiggerGUI
                 _agent.BringToFront();
                 _directions[i].Visible = checkBox1.Checked;
             }
-            _movementTimer.Tick += new System.EventHandler(Move);
             PlayAction(_result[_agentPos - 1]);
         }
 
@@ -301,6 +303,7 @@ namespace GoldDiggerGUI
         private void button2_Click(object sender, EventArgs e)
         {
             _result = _solver.ValueIteration();
+            _qLearningFlag = false;
             for (int i = 0; i < _result.Length; ++i)
             {
                 Console.Write(i.ToString() + " " + Enum.GetName(typeof(AgentAction), _result[i]) + "\n");
@@ -324,7 +327,35 @@ namespace GoldDiggerGUI
                 }
                 _directions[i].Visible = checkBox1.Checked;
             }
-            _movementTimer.Tick += new System.EventHandler(Move);
+            PlayAction(_result[_agentPos - 1]);
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBox1.SelectedIndex == 0)
+            {
+                PolicyValueIterationPanel.Visible = true;
+                qLearningPanel.Visible = false;
+                
+            }
+            else
+            {
+                PolicyValueIterationPanel.Visible = false;
+                qLearningPanel.Visible = true;
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            int res = _solver.QLearningAct();
+            _qLearningFlag = true;
+            if (_result == null)
+            {
+                _result = new int[_width * _height];
+                for (int i = 0; i < _width * _height; ++i)
+                    _result[i] = -1;
+            }
+            _result[_agentPos - 1] = res;
             PlayAction(_result[_agentPos - 1]);
         }
     }

@@ -16,6 +16,7 @@ namespace GoldDiggerCore {
 		Controller(const char* path);
 		AgentAction* ValueIteration();
 		AgentAction* PolicyIteration();
+		AgentAction QLearningAct();
 		std::pair<int, int> Size();
 	};
 

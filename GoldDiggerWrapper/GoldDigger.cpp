@@ -23,4 +23,10 @@ namespace GoldDigger {
 		return result;
 	}
 
+	int GoldDiggerSolver::QLearningAct()
+	{
+		AgentAction action = m_Instance->QLearningAct();
+		return action;
+	}
+
 } // GoldDigger
