@@ -19,6 +19,10 @@ namespace GoldDiggerCore {
 	{
 		return _agent.QLearningAct();
 	}
+	int Controller::AgentRandomPosition()
+	{
+		return _agent.RandomPosition();
+	}
 	std::pair<int, int> Controller::Size()
 	{
 		return std::make_pair(_agent.GetOptions().n, _agent.GetOptions().m);

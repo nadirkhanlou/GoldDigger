@@ -29,6 +29,8 @@ namespace GoldDiggerGUI
         double _scaleFactor;
         PictureBox[] _directions;
         bool _qLearningFlag;
+        List<int> _golds;
+        int _offsetX;
         Timer _movementTimer = new Timer
         {
             Interval = 40
@@ -44,13 +46,15 @@ namespace GoldDiggerGUI
 
         public void GenerateGameBoard(string input)
         {
-            int offsetX = 5;
+            _offsetX = 5;
             _scaleFactor = 1;
 
             String[] inputLines = input.Split('\n');
             String[] sizes = inputLines[0].Split(' ');
             _height = int.Parse(sizes[0]);
             _width = int.Parse(sizes[1]);
+
+            _golds = new List<int>();
 
             if (_width > 10 || _height > 10)
                 _scaleFactor = .5f;
@@ -61,7 +65,7 @@ namespace GoldDiggerGUI
             int agentY = (agentPos % _height);
             if (agentY == 0)
                 agentY = _height;
-            _agent.Location = new System.Drawing.Point((int)(_scaleFactor * (offsetX + 32 * ((agentPos - 1) / _width) + 2)), (int)(_scaleFactor * (32 * (agentY - 1) + 2)));
+            _agent.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * ((agentPos - 1) / _width) + 2)), (int)(_scaleFactor * (32 * (agentY - 1) + 2)));
             _agent.Name = "agent";
             _agent.BackColor = Color.Transparent;
             _agent.Size = new System.Drawing.Size((int)(28 * _scaleFactor), (int)(28 * _scaleFactor));
@@ -76,10 +80,11 @@ namespace GoldDiggerGUI
             for(int i = 1; i < positions.Length; i++)
             {
                 PictureBox gold = new PictureBox();
+                _golds.Add(int.Parse(positions[i]));
                 int goldY = int.Parse(positions[i]) % (_height);
                 if (goldY == 0)
                     goldY = _height;
-                gold.Location = new System.Drawing.Point((int)(_scaleFactor * (offsetX + 32 * ((int.Parse(positions[i]) - 1) / _width) + 2)), (int)(_scaleFactor *(32 * (goldY - 1) + 2)));
+                gold.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * ((int.Parse(positions[i]) - 1) / _width) + 2)), (int)(_scaleFactor *(32 * (goldY - 1) + 2)));
                 gold.Name = "gold" + i.ToString();
                 gold.Size = new System.Drawing.Size((int)(28 * _scaleFactor), (int)(28 * _scaleFactor));
                 gold.TabIndex = 0;
@@ -101,7 +106,7 @@ namespace GoldDiggerGUI
                     String[] block = inputLines[_width * i + j + 1].Split(' ');
 
                     _directions[i * _width + j] = new PictureBox();
-                    _directions[i * _width + j].Location = new System.Drawing.Point((int)(_scaleFactor * (offsetX + 32 * i + 2)), (int)(_scaleFactor * (32 * j + 2)));
+                    _directions[i * _width + j].Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * i + 2)), (int)(_scaleFactor * (32 * j + 2)));
                     _directions[i * _width + j].Name = "" + i.ToString() + "_" + j.ToString();
                     _directions[i * _width + j].Size = new System.Drawing.Size((int)(28 * _scaleFactor), (int)(28 * _scaleFactor));
                     _directions[i * _width + j].TabIndex = 0;
@@ -115,7 +120,7 @@ namespace GoldDiggerGUI
                     if (block[0].Trim() == "0")
                     {
                         PictureBox up = new PictureBox();
-                        up.Location = new System.Drawing.Point((int)(_scaleFactor * (offsetX + 32 * i)), (int)(_scaleFactor * (32 * j)));
+                        up.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * i)), (int)(_scaleFactor * (32 * j)));
                         up.Name = "up +" + i.ToString() + "_" + j.ToString();
                         up.Size = new System.Drawing.Size((int)(32 * _scaleFactor), (int)(2 * _scaleFactor));
                         up.TabIndex = 0;
@@ -129,7 +134,7 @@ namespace GoldDiggerGUI
                     if (block[1].Trim() == "0")
                     {
                         PictureBox right = new PictureBox();
-                        right.Location = new System.Drawing.Point((int)(_scaleFactor * (offsetX + 32 * i + 32)), (int)(_scaleFactor * (32 * j)));
+                        right.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * i + 32)), (int)(_scaleFactor * (32 * j)));
                         right.Name = "right +" + i.ToString() + "_" + j.ToString();
                         right.Size = new System.Drawing.Size((int)(2 * _scaleFactor), (int)(32 * _scaleFactor));
                         right.TabIndex = 0;
@@ -143,7 +148,7 @@ namespace GoldDiggerGUI
                     if (block[2].Trim() == "0")
                     {
                         PictureBox down = new PictureBox();
-                        down.Location = new System.Drawing.Point((int)(_scaleFactor * (offsetX + 32 * i)), (int)(_scaleFactor * (32 * j + 32)));
+                        down.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * i)), (int)(_scaleFactor * (32 * j + 32)));
                         down.Name = "down +" + i.ToString() + "_" + j.ToString();
                         down.Size = new System.Drawing.Size((int)(32 * _scaleFactor), (int)(2 * _scaleFactor));
                         down.TabIndex = 0;
@@ -157,7 +162,7 @@ namespace GoldDiggerGUI
                     if (block[3].Trim() == "0")
                     {
                         PictureBox left = new PictureBox();
-                        left.Location = new System.Drawing.Point((int)(_scaleFactor * (offsetX + 32 * i)), (int)(_scaleFactor * (32 * j)));
+                        left.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * i)), (int)(_scaleFactor * (32 * j)));
                         left.Name = "left +" + i.ToString() + "_" + j.ToString();
                         left.Size = new System.Drawing.Size((int)(2 * _scaleFactor), (int)(32 * _scaleFactor));
                         left.TabIndex = 0;
@@ -184,6 +189,11 @@ namespace GoldDiggerGUI
                 _movementTimer.Stop();
                 if(!_qLearningFlag)
                     PlayAction(_result[_agentPos - 1]);
+                else if (!_golds.Contains(_agentPos))
+                {
+                    QLearningAct();
+                }
+
             }
         }
 
@@ -345,7 +355,7 @@ namespace GoldDiggerGUI
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void QLearningAct()
         {
             int res = _solver.QLearningAct();
             _qLearningFlag = true;
@@ -357,6 +367,17 @@ namespace GoldDiggerGUI
             }
             _result[_agentPos - 1] = res;
             PlayAction(_result[_agentPos - 1]);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (_golds.Contains(_agentPos))
+            {
+                _agentPos = _solver.AgentRandomPosition() + 1;
+                int agentY = (_agentPos % _height);
+                _agent.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * ((_agentPos - 1) / _width) + 2)), (int)(_scaleFactor * (32 * (agentY - 1) + 2)));
+            }
+            QLearningAct();
         }
     }
 } // GoldDiggerGUI

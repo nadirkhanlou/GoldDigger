@@ -252,11 +252,26 @@ namespace GoldDiggerCore {
 			max = std::max(max, reward + gamma * _Q[nextPos][action]);
 		_Q[_currentPos][selectedAction] = max;
 
+
+		delete[] probDist;
+		if (_currentPos == nextPos)
+			return QLearningAct();
+
 		_currentPos = nextPos;
 
 		std::cout << "Chose action " << selectedAction << " going to " << nextPos << "\n";
 
-		delete[] probDist;
+		
 		return selectedAction;
+	}
+	int Agent::RandomPosition()
+	{
+		int pos = rand() % (_options.n * _options.m);
+		if (_map->IsAccessible(pos)) {
+			_currentPos = pos;
+			std::cout << pos << "\n";
+			return pos;
+		}
+		return RandomPosition();
 	}
 } // namespace GoldDiggerAgent

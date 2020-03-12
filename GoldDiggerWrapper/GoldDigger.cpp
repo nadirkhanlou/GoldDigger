@@ -29,4 +29,9 @@ namespace GoldDigger {
 		return action;
 	}
 
+	int GoldDiggerSolver::AgentRandomPosition()
+	{
+		return m_Instance->AgentRandomPosition();
+	}
+
 } // GoldDigger

@@ -48,6 +48,7 @@ namespace GoldDiggerCore {
 		unsigned int NextPosition(unsigned int pos, AgentAction action);
 		int ActionReward(unsigned int pos, AgentAction action);
 		void MarkAsAccessible(unsigned int pos);
+		bool IsAccessible(unsigned int pos);
 	};
 
 

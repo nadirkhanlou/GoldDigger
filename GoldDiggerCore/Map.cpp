@@ -139,4 +139,9 @@ namespace GoldDiggerCore {
 			MarkAsAccessible(NextPosition(pos, AgentAction::Left));
 	}
 
+	bool Map::IsAccessible(unsigned int pos)
+	{
+		return _goldAccessPartition[pos];
+	}
+
 } // namespace GoldDiggerCore

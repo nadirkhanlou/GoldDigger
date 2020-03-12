@@ -17,6 +17,7 @@ namespace GoldDiggerCore {
 		AgentAction* ValueIteration();
 		AgentAction* PolicyIteration();
 		AgentAction QLearningAct();
+		int AgentRandomPosition();
 		std::pair<int, int> Size();
 	};
 
