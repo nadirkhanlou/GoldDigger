@@ -62,10 +62,10 @@ namespace GoldDiggerGUI
             String[] positions = inputLines[_height * _width + 1].Split(' ');
             int agentPos = int.Parse(positions[0]);
             _agent = new PictureBox();
-            int agentY = (agentPos % _height);
+            int agentY = (agentPos % _width);
             if (agentY == 0)
-                agentY = _height;
-            _agent.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * ((agentPos - 1) / _width) + 2)), (int)(_scaleFactor * (32 * (agentY - 1) + 2)));
+                agentY = _width;
+            _agent.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * ((agentPos - 1) / _height) + 2)), (int)(_scaleFactor * (32 * (agentY - 1) + 2)));
             _agent.Name = "agent";
             _agent.BackColor = Color.Transparent;
             _agent.Size = new System.Drawing.Size((int)(28 * _scaleFactor), (int)(28 * _scaleFactor));
@@ -81,10 +81,10 @@ namespace GoldDiggerGUI
             {
                 PictureBox gold = new PictureBox();
                 _golds.Add(int.Parse(positions[i]));
-                int goldY = int.Parse(positions[i]) % (_height);
+                int goldY = int.Parse(positions[i]) % (_width);
                 if (goldY == 0)
-                    goldY = _height;
-                gold.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * ((int.Parse(positions[i]) - 1) / _width) + 2)), (int)(_scaleFactor *(32 * (goldY - 1) + 2)));
+                    goldY = _width;
+                gold.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * ((int.Parse(positions[i]) - 1) / _height) + 2)), (int)(_scaleFactor *(32 * (goldY - 1) + 2)));
                 gold.Name = "gold" + i.ToString();
                 gold.Size = new System.Drawing.Size((int)(28 * _scaleFactor), (int)(28 * _scaleFactor));
                 gold.TabIndex = 0;
@@ -103,19 +103,19 @@ namespace GoldDiggerGUI
                 for (int j = 0; j < _height; j++)
                 {
 
-                    String[] block = inputLines[_width * i + j + 1].Split(' ');
+                    String[] block = inputLines[_height * i + j + 1].Split(' ');
 
-                    _directions[i * _width + j] = new PictureBox();
-                    _directions[i * _width + j].Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * i + 2)), (int)(_scaleFactor * (32 * j + 2)));
-                    _directions[i * _width + j].Name = "" + i.ToString() + "_" + j.ToString();
-                    _directions[i * _width + j].Size = new System.Drawing.Size((int)(28 * _scaleFactor), (int)(28 * _scaleFactor));
-                    _directions[i * _width + j].TabIndex = 0;
-                    _directions[i * _width + j].TabStop = false;
-                    _directions[i * _width + j].SizeMode = PictureBoxSizeMode.StretchImage;
-                    _directions[i * _width + j].Image = GoldDiggerGUI.Properties.Resources.horizontal_wall;
-                    _directions[i * _width + j].Visible = false;
-                    ((System.ComponentModel.ISupportInitialize)(_directions[i * _width + j])).EndInit();
-                    this.Controls.Add(_directions[i * _width + j]);
+                    _directions[i * _height + j] = new PictureBox();
+                    _directions[i * _height + j].Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * i + 2)), (int)(_scaleFactor * (32 * j + 2)));
+                    _directions[i * _height + j].Name = "" + i.ToString() + "_" + j.ToString();
+                    _directions[i * _height + j].Size = new System.Drawing.Size((int)(28 * _scaleFactor), (int)(28 * _scaleFactor));
+                    _directions[i * _height + j].TabIndex = 0;
+                    _directions[i * _height + j].TabStop = false;
+                    _directions[i * _height + j].SizeMode = PictureBoxSizeMode.StretchImage;
+                    _directions[i * _height + j].Image = GoldDiggerGUI.Properties.Resources.horizontal_wall;
+                    _directions[i * _height + j].Visible = false;
+                    ((System.ComponentModel.ISupportInitialize)(_directions[i * _height + j])).EndInit();
+                    this.Controls.Add(_directions[i * _height + j]);
 
                     if (block[0].Trim() == "0")
                     {

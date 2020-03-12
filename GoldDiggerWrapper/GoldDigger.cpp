@@ -3,6 +3,7 @@
 
 namespace GoldDigger {
 	GoldDiggerSolver::GoldDiggerSolver(String^ path) :ManagedObject<Controller>(new Controller(Conversion::string_to_char_array(path))) {
+		srand(time(0));
 	}
 
 	array<int>^ GoldDiggerSolver::ValueIteration() {
