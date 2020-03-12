@@ -7,9 +7,110 @@ namespace GoldDiggerCore {
 
 	Agent::Agent(Map* map)
 		: _map(map),
-		_options(Options(*map))
-	{
+		_options(Options(*map)) {
 		_currentPos = _options.agentStartPos;
+	}
+
+	Agent::Agent(const Agent& other)
+		: _currentPos(other._currentPos),
+		_map(other._map),
+		_options(other._options) {
+		if (other._Q == nullptr) {
+			_Q = nullptr;
+			return;
+		}
+		_Q = new double* [_options.n * _options.m];
+		for (unsigned int i = 0; i < _options.n * _options.m; ++i) {
+			_Q[i] = new double[NUM_OF_ACTIONS];
+			for (auto action : AgentActions)
+				_Q[i][action] = other._Q[i][action];
+		}
+	}
+
+	Agent::Agent(Agent&& other)
+		: _currentPos(other._currentPos), 
+		_map(other._map),
+		_options(other._options),
+		_Q(other._Q) {
+		other._Q = nullptr;
+	}
+
+	Agent& Agent::operator=(const Agent& other)
+	{
+		_currentPos = other._currentPos;
+		_map = other._map;
+		_options = other._options;
+		if (other._Q == nullptr) {
+			_Q = nullptr;
+			return *this;
+		}
+		_Q = new double* [_options.n * _options.m];
+		for (unsigned int i = 0; i < _options.n * _options.m; ++i) {
+			_Q[i] = new double[NUM_OF_ACTIONS];
+			for (auto action : AgentActions)
+				_Q[i][action] = other._Q[i][action];
+		}
+		return *this;
+	}
+	Agent& Agent::operator=(Agent&& other) {
+		_currentPos = other._currentPos;
+		_map = other._map;
+		_options = other._options;
+		_Q = other._Q;
+		other._Q = nullptr;
+		return *this;
+	}
+	Agent::~Agent() {
+		for (unsigned int i = 0; i < _options.n * _options.m; ++i)
+			delete[] _Q[i];
+		delete[] _Q;
+	}
+
+	void Agent::PrintQ() {
+		if (_Q == nullptr)
+			return;
+		for (unsigned int i = 0; i < _options.n * _options.m; ++i) {
+			std::cout << i << ": ";
+			for (auto action : AgentActions)
+				std::cout << _Q[i][action] << '\t';
+			std::cout << '\n';
+		}
+	}
+
+	void Agent::SetCurrentPos(unsigned int pos) {
+		assert(pos < _options.n * _options._m);
+		_currentPos = pos;
+	}
+
+	double* Agent::GetActionProbabilityDistribution(double* QRow) {
+		double* probDist = new double[NUM_OF_ACTIONS] {};
+
+		double sum = 0;
+		double temp;
+		for (auto action : AgentActions) {
+			temp = std::exp(QRow[action]);
+			probDist[action] = temp;
+			sum += temp;
+		}
+		for (auto action : AgentActions)
+			probDist[action] /= sum;
+
+		return probDist;
+	}
+
+	AgentAction Agent::SelectAction(double* probDist) {
+		// Get a random number in range [0,1]
+		double randomNumber = RANDOM;
+		AgentAction selectedAction;
+		double low = 0;
+		for (auto action : AgentActions) {
+			if (randomNumber >= low && randomNumber < low + probDist[action]) {
+				selectedAction = action;
+				break;
+			}
+			low += probDist[action];
+		}
+		return selectedAction;
 	}
 
 	AgentAction* Agent::ValueIteration(double gamma) {
@@ -66,7 +167,7 @@ namespace GoldDiggerCore {
 		srand(time(0));
 		AgentAction* prevPolicy = new AgentAction[_options.n * _options.m];
 		for (unsigned int i = 0; i < _options.n * _options.m; ++i)
-			prevPolicy[i] = AgentAction(rand() % 5);
+			prevPolicy[i] = AgentAction(rand() % 4);
 
 		// Initialize the values according to the policy
 		double* prevValues = new double[_options.n * _options.m]{};
@@ -123,5 +224,36 @@ namespace GoldDiggerCore {
 
 		delete[] prevValues;
 		return prevPolicy;
+	}
+
+	unsigned int Agent::QLearningAct(double gamma) {
+		// If _Q is not initialized, initialize it first
+		if (_Q == nullptr) {
+			_Q = new double* [_options.n * _options.m];
+			for (unsigned int i = 0; i < _options.n * _options.m; ++i)
+				_Q[i] = new double[NUM_OF_ACTIONS] {};
+		}
+
+		// Get the probability distribution of actions for each block
+		double* probDist = GetActionProbabilityDistribution(_Q[_currentPos]);
+
+		// Select an action and execute it
+		AgentAction selectedAction = SelectAction(probDist);
+
+		// Execute the action, receive the immediate award and observe the 
+		// resulting position
+		int reward = _map->ActionReward(_currentPos, selectedAction);
+		unsigned int nextPos = _map->NextPosition(_currentPos, selectedAction);
+
+		// Update the Q entry for currentPos
+		double max = -1;
+		for (auto action : AgentActions)
+			max = std::max(max, reward + gamma * _Q[nextPos][action]);
+		_Q[_currentPos][selectedAction] = max;
+
+		_currentPos = nextPos;
+
+		delete[] probDist;
+		return _currentPos;
 	}
 } // namespace GoldDiggerAgent
