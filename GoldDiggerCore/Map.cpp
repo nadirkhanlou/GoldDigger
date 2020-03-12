@@ -15,6 +15,10 @@ namespace GoldDiggerCore {
 			_map[i] = Block(u, r, d, l);
 		}
 
+		_goldAccessPartition = new bool[_n * _m];
+		for (int i = 0; i < _n * _m; ++i)
+			_goldAccessPartition[i] = false;
+
 		input >> _startPos;
 		--_startPos;	// Because the positions in input file are 1-based
 		unsigned int tmp;
