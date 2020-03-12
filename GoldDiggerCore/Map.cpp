@@ -24,6 +24,8 @@ namespace GoldDiggerCore {
 			// @TODO: Should I also make this a 'trap' block, e.g. make the other
 			// four actions impossible?
 			_map[tmp].up = _map[tmp].right = _map[tmp].down = _map[tmp].left = 0;
+
+			MarkAsAccessible(tmp);
 		}
 	}
 
@@ -106,6 +108,19 @@ namespace GoldDiggerCore {
 			return GOAL_SCORE;
 		else
 			return 0;
+	}
+
+	void Map::MarkAsAccessible(unsigned int pos)
+	{
+		_goldAccessPartition[pos] = true;
+		if (_map[pos].up && !_goldAccessPartition[pos - _n])
+			MarkAsAccessible(pos - _n);
+		if (_map[pos].down && !_goldAccessPartition[pos + _n])
+			MarkAsAccessible(pos + _n);
+		if (_map[pos].right && !_goldAccessPartition[pos + 1])
+			MarkAsAccessible(pos + 1);
+		if (_map[pos].left && !_goldAccessPartition[pos - 1])
+			MarkAsAccessible(pos - 1);
 	}
 
 } // namespace GoldDiggerCore

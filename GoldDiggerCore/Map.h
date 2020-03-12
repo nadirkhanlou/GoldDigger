@@ -31,6 +31,7 @@ namespace GoldDiggerCore {
 		Block* _map;
 		unsigned int _n, _m;
 		unsigned int _startPos;
+		bool* _goldAccessPartition;
 
 
 	public:
@@ -46,6 +47,7 @@ namespace GoldDiggerCore {
 		unsigned int GetFlatCoordinate(unsigned int x, unsigned int y);
 		unsigned int NextPosition(unsigned int pos, AgentAction action);
 		int ActionReward(unsigned int pos, AgentAction action);
+		void MarkAsAccessible(unsigned int pos);
 	};
 
 
