@@ -437,20 +437,25 @@ namespace GoldDiggerGUI
                 for (int i = 0; i < _width * _height; ++i)
                     _result[i] = -1;
             }
+            Console.Write("pos = " + _agentPos.ToString());  
             _result[_agentPos - 1] = res;
             switch (res)
             {
                 case (int)AgentAction.Down:
-                    _agentPos += 1;
+                    if(_agentPos < _width * _height - 1)
+                        _agentPos += 1;
                     break;
                 case (int)AgentAction.Left:
-                    _agentPos -= _height;
+                    if (_agentPos >= _height)
+                        _agentPos -= _height;
                     break;
                 case (int)AgentAction.Right:
-                    _agentPos += _height;
+                    if (_agentPos < _width * _height - _height)
+                        _agentPos += _height;
                     break;
                 case (int)AgentAction.Up:
-                    _agentPos -= 1;
+                    if (_agentPos > 0)
+                        _agentPos -= 1;
                     break;
             }
             if (!_golds.Contains(_agentPos))
@@ -460,7 +465,7 @@ namespace GoldDiggerGUI
             else
             {
                 _solver.QLearningAct();
-                double[][] QTableValues = QTableValues = _solver.GetQTable();
+                double[][] QTableValues = _solver.GetQTable();
                 for (int i = 0; i < _width * _height; ++i)
                 {
                     qTableArray[i, 1].Text = QTableValues[i][0].ToString();
@@ -473,6 +478,8 @@ namespace GoldDiggerGUI
 
         private void button3_Click(object sender, EventArgs e)
         {
+            button3.Enabled = false;
+            button4.Enabled = false;
             if (_golds.Contains(_agentPos))
             {
                 _agentPos = _solver.AgentRandomPosition() + 1;
@@ -482,10 +489,14 @@ namespace GoldDiggerGUI
                 _agent.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * ((_agentPos - 1) / _height) + 2)), (int)(_scaleFactor * (32 * (agentY - 1) + 2)));
             }
             QLearningAct();
+            button3.Enabled = true;
+            button4.Enabled = true;
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
+            button3.Enabled = false;
+            button4.Enabled = false;
             if (_golds.Contains(_agentPos))
             {
                 _agentPos = _solver.AgentRandomPosition() + 1;
@@ -495,6 +506,8 @@ namespace GoldDiggerGUI
                 _agent.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * ((_agentPos - 1) / _height) + 2)), (int)(_scaleFactor * (32 * (agentY - 1) + 2)));
             }
             QLearningActWithoutAnim();
+            button3.Enabled = true;
+            button4.Enabled = true;
         }
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
