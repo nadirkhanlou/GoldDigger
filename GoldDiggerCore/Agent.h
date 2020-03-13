@@ -43,6 +43,7 @@ namespace GoldDiggerCore {
 		AgentAction* PolicyIteration(double gamma = 0.9);
 		AgentAction QLearningAct(double gamma = 0.9);
 		int RandomPosition();
+		double** GetQ() { return _Q; };
 
 	};
 } // namespace goldDiggerAgent

@@ -60,32 +60,35 @@ namespace GoldDiggerCore {
 	}
 
 	Map& Map::operator=(const Map& other) {
-		_n = other._n;
-		_m = other._m;
-		_startPos = other._startPos;
-		delete[] _map;
-		delete[] _goldAccessPartition;
-		_map = new Block[_n * _m];
-		_goldAccessPartition = new bool[_n * _m];
-		for (unsigned int i = 0; i < _n * _m; ++i) {
-			_map[i] = other._map[i];
-			_goldAccessPartition[i] = other._goldAccessPartition[i];
+		if (this != &other) {
+			_n = other._n;
+			_m = other._m;
+			_startPos = other._startPos;
+			delete[] _map;
+			delete[] _goldAccessPartition;
+			_map = new Block[_n * _m];
+			_goldAccessPartition = new bool[_n * _m];
+			for (unsigned int i = 0; i < _n * _m; ++i) {
+				_map[i] = other._map[i];
+				_goldAccessPartition[i] = other._goldAccessPartition[i];
+			}
 		}
-
 		return *this;
 	}
 
 	Map& Map::operator=(Map&& other) {
-		_n = other._n;
-		_m = other._m;
-		_startPos = other._startPos;
-		delete[] _map;
-		delete[] _goldAccessPartition;
-		_map = other._map;
-		_goldAccessPartition = other._goldAccessPartition;
-		other._map = nullptr;
-		other._goldAccessPartition = nullptr;
 
+		if (this != &other) {
+			_n = other._n;
+			_m = other._m;
+			_startPos = other._startPos;
+			delete[] _map;
+			delete[] _goldAccessPartition;
+			_map = other._map;
+			_goldAccessPartition = other._goldAccessPartition;
+			other._map = nullptr;
+			other._goldAccessPartition = nullptr;
+		}
 		return *this;
 	}
 

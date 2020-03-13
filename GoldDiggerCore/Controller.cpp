@@ -27,4 +27,8 @@ namespace GoldDiggerCore {
 	{
 		return std::make_pair(_agent.GetOptions().n, _agent.GetOptions().m);
 	}
+	double** Controller::GetQTable()
+	{
+		return _agent.GetQ();
+	}
 } // namespace goldDiggerCore

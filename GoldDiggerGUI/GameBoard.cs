@@ -32,6 +32,7 @@ namespace GoldDiggerGUI
         List<int> _golds;
         int _offsetX;
         Label[,] qTableArray;
+        Label[] _blocksIndx;
         Timer _movementTimer = new Timer
         {
             Interval = 40
@@ -98,6 +99,7 @@ namespace GoldDiggerGUI
 
             _sprites = new PictureBox[_width, _height];
             _directions = new PictureBox[_width* _height];
+            _blocksIndx = new Label[_width * _height];
 
             for (int i = 0; i < _width; i++)
             {
@@ -117,6 +119,13 @@ namespace GoldDiggerGUI
                     _directions[i * _height + j].Visible = false;
                     ((System.ComponentModel.ISupportInitialize)(_directions[i * _height + j])).EndInit();
                     this.Controls.Add(_directions[i * _height + j]);
+
+                    _blocksIndx[i * _height + j] = new Label();
+                    _blocksIndx[i * _height + j].Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * i + 2)), (int)(_scaleFactor * (32 * j + 2)));
+                    _blocksIndx[i * _height + j].Size = new System.Drawing.Size(28, 28);
+                    _blocksIndx[i * _height + j].Text = (i * _height + j + 1).ToString();
+                    _blocksIndx[i * _height + j].Visible = false;
+                    this.Controls.Add(_blocksIndx[i * _height + j]);
 
                     if (block[0].Trim() == "0")
                     {
@@ -177,20 +186,38 @@ namespace GoldDiggerGUI
                 }
             }
 
+            for (int j = 0; j < 4; ++j)
+            {
+                Label qTableLabel = new Label();
+                qTableLabel.Parent = qLearningPanel;
+                qTableLabel.Location = new System.Drawing.Point(j * 36 + 40, 32);
+                qTableLabel.Size = new System.Drawing.Size(36, 24);
+                qTableLabel.Text = Enum.GetName(typeof(AgentAction), j);
+            }
+
             qTableArray = new Label[_width * _height, 5];
             for (int i = 0; i < _width * _height; ++i)
             {
-                qTableArray[i, 0] = new Label();
-                qTableArray[i, 0].Parent = qTable;
-                qTableArray[i, 0].Location = new System.Drawing.Point(qLearningPanel.Location.X, qLearningPanel.Location.Y + i * 30);
+                for(int j = 0; j < 5; ++j)
+                {
+                    qTableArray[i, j] = new Label();
+                    qTableArray[i, j].Parent = qTable;
+                    qTableArray[i, j].Location = new System.Drawing.Point(j * 36, i * 24);
+                    qTableArray[i, j].Size = new System.Drawing.Size(36, 24);
+                }
+                
                 qTableArray[i, 0].Text = (i + 1).ToString();
-                this.Controls.Add(qTableArray[i, 0]);
+                qTableArray[i, 1].Text = (0).ToString();
+                qTableArray[i, 2].Text = (0).ToString();
+                qTableArray[i, 3].Text = (0).ToString();
+                qTableArray[i, 4].Text = (0).ToString();
             }
-            qTable.AutoScroll = false;
-            qTable.HorizontalScroll.Enabled = false;
-            qTable.HorizontalScroll.Visible = false;
-            qTable.HorizontalScroll.Maximum = 0;
-            qTable.AutoScroll = true;
+            //qTable.AutoScroll = false;
+            //qTable.HorizontalScroll.Enabled = false;
+            //qTable.HorizontalScroll.Visible = false;
+            //qTable.HorizontalScroll.Maximum = 0;
+            //qTable.AutoScroll = true;
+            //qTable.Parent = qLearningPanel;
 
             ResumeLayout();
             //var task = Task.Run(async () => await MoveRight());
@@ -203,13 +230,26 @@ namespace GoldDiggerGUI
             if (_timerSteps <= 0)
             {
                 _movementTimer.Stop();
-                if (!_qLearningFlag) {
+                if (!_qLearningFlag)
+                {
                     if (!_golds.Contains(_agentPos))
                         PlayAction(_result[_agentPos - 1]);
                 }
                 else if (!_golds.Contains(_agentPos))
                 {
                     QLearningAct();
+                }
+                else
+                {
+                    _solver.QLearningAct();
+                    double[][] QTableValues = QTableValues = _solver.GetQTable();
+                    for (int i = 0; i < _width * _height; ++i)
+                    {
+                        qTableArray[i, 1].Text = QTableValues[i][0].ToString();
+                        qTableArray[i, 2].Text = QTableValues[i][1].ToString();
+                        qTableArray[i, 3].Text = QTableValues[i][2].ToString();
+                        qTableArray[i, 4].Text = QTableValues[i][3].ToString();
+                    }
                 }
 
             }
@@ -387,6 +427,50 @@ namespace GoldDiggerGUI
             PlayAction(_result[_agentPos - 1]);
         }
 
+        private void QLearningActWithoutAnim()
+        {
+            int res = _solver.QLearningAct();
+            _qLearningFlag = true;
+            if (_result == null)
+            {
+                _result = new int[_width * _height];
+                for (int i = 0; i < _width * _height; ++i)
+                    _result[i] = -1;
+            }
+            _result[_agentPos - 1] = res;
+            switch (res)
+            {
+                case (int)AgentAction.Down:
+                    _agentPos += 1;
+                    break;
+                case (int)AgentAction.Left:
+                    _agentPos -= _height;
+                    break;
+                case (int)AgentAction.Right:
+                    _agentPos += _height;
+                    break;
+                case (int)AgentAction.Up:
+                    _agentPos -= 1;
+                    break;
+            }
+            if (!_golds.Contains(_agentPos))
+            {
+                QLearningActWithoutAnim();
+            }
+            else
+            {
+                _solver.QLearningAct();
+                double[][] QTableValues = QTableValues = _solver.GetQTable();
+                for (int i = 0; i < _width * _height; ++i)
+                {
+                    qTableArray[i, 1].Text = QTableValues[i][0].ToString();
+                    qTableArray[i, 2].Text = QTableValues[i][1].ToString();
+                    qTableArray[i, 3].Text = QTableValues[i][2].ToString();
+                    qTableArray[i, 4].Text = QTableValues[i][3].ToString();
+                }
+            }
+        }
+
         private void button3_Click(object sender, EventArgs e)
         {
             if (_golds.Contains(_agentPos))
@@ -398,6 +482,28 @@ namespace GoldDiggerGUI
                 _agent.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * ((_agentPos - 1) / _height) + 2)), (int)(_scaleFactor * (32 * (agentY - 1) + 2)));
             }
             QLearningAct();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (_golds.Contains(_agentPos))
+            {
+                _agentPos = _solver.AgentRandomPosition() + 1;
+                int agentY = (_agentPos % _height);
+                if (agentY == 0)
+                    agentY = _height;
+                _agent.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * ((_agentPos - 1) / _height) + 2)), (int)(_scaleFactor * (32 * (agentY - 1) + 2)));
+            }
+            QLearningActWithoutAnim();
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            for (int i = 0; i < _directions.Length; ++i)
+            {
+
+                _blocksIndx[i].Visible = checkBox2.Checked;
+            }
         }
     }
 } // GoldDiggerGUI

@@ -17,5 +17,6 @@ namespace GoldDigger {
 		array<int>^ PolicyIteration();
 		int QLearningAct();
 		int AgentRandomPosition();
+		array<array<double>^>^ GetQTable();
 	};
 } // GoldDigger

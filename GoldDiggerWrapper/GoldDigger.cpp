@@ -35,4 +35,18 @@ namespace GoldDigger {
 		return m_Instance->AgentRandomPosition();
 	}
 
+	array<array<double>^>^ GoldDiggerSolver::GetQTable()
+	{
+		array<array<double>^>^ retVal = gcnew array<array<double>^> (m_Instance->Size().first * m_Instance->Size().second);
+		double** qTable = m_Instance->GetQTable();
+		for (int i = 0; i < retVal->Length; ++i) {
+			retVal[i] = gcnew array<double>(4);
+			retVal[i][0] = qTable[i][0];
+			retVal[i][1] = qTable[i][1];
+			retVal[i][2] = qTable[i][2];
+			retVal[i][3] = qTable[i][3];
+		}
+		return retVal;
+	}
+
 } // GoldDigger

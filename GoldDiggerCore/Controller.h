@@ -19,6 +19,7 @@ namespace GoldDiggerCore {
 		AgentAction QLearningAct();
 		int AgentRandomPosition();
 		std::pair<int, int> Size();
+		double** GetQTable();
 	};
 
 } //GoldDiggerSolver
