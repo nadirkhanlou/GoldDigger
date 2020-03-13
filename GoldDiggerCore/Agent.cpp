@@ -263,14 +263,12 @@ namespace GoldDiggerCore {
 			for (unsigned int i = 0; i < _options.n * _options.m; ++i)
 				_Q[i] = new double[NUM_OF_ACTIONS] {};
 		}
-		std::cout << "_currentPos=" << _Q[_currentPos] << "\n";
+		
 		// Get the probability distribution of actions for each block
 		double* probDist = GetActionProbabilityDistribution(_Q[_currentPos]);
-		std::cout << probDist[0] << "\n";
 
 		// Select an action and execute it
 		AgentAction selectedAction = SelectAction(probDist);
-		std::cout << "selected=" << selectedAction << "\n"; 
 
 		// Execute the action, receive the immediate award and observe the 
 		// resulting position

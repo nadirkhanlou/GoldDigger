@@ -437,7 +437,6 @@ namespace GoldDiggerGUI
                 for (int i = 0; i < _width * _height; ++i)
                     _result[i] = -1;
             }
-            Console.Write("pos = " + _agentPos.ToString());  
             _result[_agentPos - 1] = res;
             switch (res)
             {
