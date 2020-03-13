@@ -438,27 +438,24 @@ namespace GoldDiggerGUI
                     _result[i] = -1;
             }
             _result[_agentPos - 1] = res;
-            switch (res)
-            {
-                case (int)AgentAction.Down:
-                    if(_agentPos < _width * _height - 1)
-                        _agentPos += 1;
-                    break;
-                case (int)AgentAction.Left:
-                    if (_agentPos >= _height)
-                        _agentPos -= _height;
-                    break;
-                case (int)AgentAction.Right:
-                    if (_agentPos < _width * _height - _height)
-                        _agentPos += _height;
-                    break;
-                case (int)AgentAction.Up:
-                    if (_agentPos > 0)
-                        _agentPos -= 1;
-                    break;
-            }
+            
             if (!_golds.Contains(_agentPos))
             {
+                switch (res)
+                {
+                    case (int)AgentAction.Down:
+                        _agentPos += 1;
+                        break;
+                    case (int)AgentAction.Left:
+                        _agentPos -= _height;
+                        break;
+                    case (int)AgentAction.Right:
+                        _agentPos += _height;
+                        break;
+                    case (int)AgentAction.Up:
+                        _agentPos -= 1;
+                        break;
+                }
                 QLearningActWithoutAnim();
             }
             else
