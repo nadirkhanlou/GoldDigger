@@ -126,14 +126,13 @@ namespace GoldDiggerCore {
 		}
 		for (auto action : AgentActions)
 			probDist[action] /= sum;
-		std::cout << "test\n";
 		return probDist;
 	}
 
 	AgentAction Agent::SelectAction(double* probDist) {
 		// Get a random number in range [0,1]
 		double randomNumber = RANDOM;
-		AgentAction selectedAction;
+		AgentAction selectedAction = AgentAction(0);
 		double low = 0;
 		for (auto action : AgentActions) {
 			if (randomNumber >= low && randomNumber < low + probDist[action]) {
@@ -269,6 +268,7 @@ namespace GoldDiggerCore {
 
 		// Select an action and execute it
 		AgentAction selectedAction = SelectAction(probDist);
+		delete[] probDist;
 
 		// Execute the action, receive the immediate award and observe the 
 		// resulting position
@@ -280,8 +280,6 @@ namespace GoldDiggerCore {
 		for (auto action : AgentActions)
 			max = std::max(max, reward + gamma * _Q[nextPos][action]);
 		_Q[_currentPos][selectedAction] = max;
-
-		delete[] probDist;
 
 		if (_currentPos == nextPos && !_map->Sense(_currentPos).gold)
 			return QLearningAct();

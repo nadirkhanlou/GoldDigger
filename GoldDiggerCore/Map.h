@@ -8,7 +8,7 @@
 
 #include "../GoldDiggerGUI/AgentAction.cs"
 
-#define GOAL_SCORE 10
+#define GOAL_SCORE 1
 
 namespace GoldDiggerCore {
 
@@ -43,8 +43,6 @@ namespace GoldDiggerCore {
 		~Map();
 
 		Block Sense(unsigned int pos);
-		std::pair<unsigned int, unsigned int> Get2DCoordinate(unsigned int pos);
-		unsigned int GetFlatCoordinate(unsigned int x, unsigned int y);
 		unsigned int NextPosition(unsigned int pos, AgentAction action);
 		int ActionReward(unsigned int pos, AgentAction action);
 		void MarkAsAccessible(unsigned int pos);
