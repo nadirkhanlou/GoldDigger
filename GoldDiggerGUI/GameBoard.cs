@@ -531,5 +531,27 @@ namespace GoldDiggerGUI
         {
             _solver.PrintQTable();
         }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            button3.Enabled = false;
+            button4.Enabled = false;
+            int iterationLen = 100;
+            int.TryParse(nIterationText.Text, out iterationLen);
+            for (int i = 0; i < iterationLen; i++)
+            {
+                QLearningActWithoutAnim();
+                if (_golds.Contains(_agentPos))
+                {
+                    _agentPos = _solver.AgentRandomPosition() + 1;
+                    int agentY = (_agentPos % _height);
+                    if (agentY == 0)
+                        agentY = _height;
+                    _agent.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * ((_agentPos - 1) / _height) + 2)), (int)(_scaleFactor * (32 * (agentY - 1) + 2)));
+                }
+            }
+            button3.Enabled = true;
+            button4.Enabled = true;
+        }
     }
 } // GoldDiggerGUI

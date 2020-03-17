@@ -8,7 +8,7 @@
 
 #include "../GoldDiggerGUI/AgentAction.cs"
 
-#define GOAL_SCORE 1
+#define GOAL_SCORE 10
 
 namespace GoldDiggerCore {
 

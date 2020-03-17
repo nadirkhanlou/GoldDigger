@@ -37,8 +37,10 @@
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.button4 = new System.Windows.Forms.Button();
             this.qTable = new System.Windows.Forms.Panel();
-            this.button3 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.nIterationText = new System.Windows.Forms.TextBox();
             this.PolicyValueIterationPanel.SuspendLayout();
             this.qLearningPanel.SuspendLayout();
             this.SuspendLayout();
@@ -99,6 +101,8 @@
             // 
             // qLearningPanel
             // 
+            this.qLearningPanel.Controls.Add(this.nIterationText);
+            this.qLearningPanel.Controls.Add(this.button6);
             this.qLearningPanel.Controls.Add(this.checkBox2);
             this.qLearningPanel.Controls.Add(this.button4);
             this.qLearningPanel.Controls.Add(this.qTable);
@@ -139,6 +143,16 @@
             this.qTable.Size = new System.Drawing.Size(213, 311);
             this.qTable.TabIndex = 1;
             // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(4, 32);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(104, 23);
+            this.button5.TabIndex = 4;
+            this.button5.Text = "Print Q table";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(3, 3);
@@ -149,15 +163,24 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // button5
+            // button6
             // 
-            this.button5.Location = new System.Drawing.Point(4, 32);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(104, 23);
-            this.button5.TabIndex = 4;
-            this.button5.Text = "Print Q table";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.button6.Location = new System.Drawing.Point(79, 372);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(107, 23);
+            this.button6.TabIndex = 5;
+            this.button6.Text = "n Iteration";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // nIterationText
+            // 
+            this.nIterationText.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.nIterationText.Location = new System.Drawing.Point(192, 373);
+            this.nIterationText.Name = "nIterationText";
+            this.nIterationText.Size = new System.Drawing.Size(62, 20);
+            this.nIterationText.TabIndex = 6;
+            this.nIterationText.Text = "100";
             // 
             // GameBoard
             // 
@@ -191,5 +214,7 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.TextBox nIterationText;
     }
 }
