@@ -34,10 +34,11 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.PolicyValueIterationPanel = new System.Windows.Forms.Panel();
             this.qLearningPanel = new System.Windows.Forms.Panel();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.button4 = new System.Windows.Forms.Button();
             this.qTable = new System.Windows.Forms.Panel();
             this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.button5 = new System.Windows.Forms.Button();
             this.PolicyValueIterationPanel.SuspendLayout();
             this.qLearningPanel.SuspendLayout();
             this.SuspendLayout();
@@ -101,12 +102,34 @@
             this.qLearningPanel.Controls.Add(this.checkBox2);
             this.qLearningPanel.Controls.Add(this.button4);
             this.qLearningPanel.Controls.Add(this.qTable);
+            this.qLearningPanel.Controls.Add(this.button5);
             this.qLearningPanel.Controls.Add(this.button3);
             this.qLearningPanel.Location = new System.Drawing.Point(475, 62);
             this.qLearningPanel.Name = "qLearningPanel";
             this.qLearningPanel.Size = new System.Drawing.Size(305, 396);
             this.qLearningPanel.TabIndex = 5;
             this.qLearningPanel.Visible = false;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(12, 376);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(52, 17);
+            this.checkBox2.TabIndex = 3;
+            this.checkBox2.Text = "Index";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(114, 3);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(188, 23);
+            this.button4.TabIndex = 2;
+            this.button4.Text = "Q learning iteration without animation";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // qTable
             // 
@@ -126,26 +149,15 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // button4
+            // button5
             // 
-            this.button4.Location = new System.Drawing.Point(114, 3);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(188, 23);
-            this.button4.TabIndex = 2;
-            this.button4.Text = "Q learning iteration without animation";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(12, 376);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(52, 17);
-            this.checkBox2.TabIndex = 3;
-            this.checkBox2.Text = "Index";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            this.button5.Location = new System.Drawing.Point(4, 32);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(104, 23);
+            this.button5.TabIndex = 4;
+            this.button5.Text = "Print Q table";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // GameBoard
             // 
@@ -178,5 +190,6 @@
         private System.Windows.Forms.Panel qTable;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.Button button5;
     }
 }

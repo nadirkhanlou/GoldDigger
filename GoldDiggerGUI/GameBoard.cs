@@ -33,6 +33,7 @@ namespace GoldDiggerGUI
         int _offsetX;
         Label[,] qTableArray;
         Label[] _blocksIndx;
+        bool _isSizeMoreThan10;
         Timer _movementTimer = new Timer
         {
             Interval = 40
@@ -57,9 +58,15 @@ namespace GoldDiggerGUI
             _width = int.Parse(sizes[1]);
 
             _golds = new List<int>();
+            button5.Visible = false;
+            _isSizeMoreThan10 = false;
 
             if (_width > 10 || _height > 10)
+            {
                 _scaleFactor = .5f;
+                _isSizeMoreThan10 = true;
+                button5.Visible = true;
+            }
 
             String[] positions = inputLines[_height * _width + 1].Split(' ');
             int agentPos = int.Parse(positions[0]);
@@ -186,31 +193,34 @@ namespace GoldDiggerGUI
                 }
             }
 
-            for (int j = 0; j < 4; ++j)
+            if (!_isSizeMoreThan10)
             {
-                Label qTableLabel = new Label();
-                qTableLabel.Parent = qLearningPanel;
-                qTableLabel.Location = new System.Drawing.Point(j * 36 + 40, 32);
-                qTableLabel.Size = new System.Drawing.Size(36, 24);
-                qTableLabel.Text = Enum.GetName(typeof(AgentAction), j);
-            }
-
-            qTableArray = new Label[_width * _height, 5];
-            for (int i = 0; i < _width * _height; ++i)
-            {
-                for(int j = 0; j < 5; ++j)
+                for (int j = 0; j < 4; ++j)
                 {
-                    qTableArray[i, j] = new Label();
-                    qTableArray[i, j].Parent = qTable;
-                    qTableArray[i, j].Location = new System.Drawing.Point(j * 36, i * 24);
-                    qTableArray[i, j].Size = new System.Drawing.Size(36, 24);
+                    Label qTableLabel = new Label();
+                    qTableLabel.Parent = qLearningPanel;
+                    qTableLabel.Location = new System.Drawing.Point(j * 36 + 40, 32);
+                    qTableLabel.Size = new System.Drawing.Size(36, 24);
+                    qTableLabel.Text = Enum.GetName(typeof(AgentAction), j);
                 }
-                
-                qTableArray[i, 0].Text = (i + 1).ToString();
-                qTableArray[i, 1].Text = (0).ToString();
-                qTableArray[i, 2].Text = (0).ToString();
-                qTableArray[i, 3].Text = (0).ToString();
-                qTableArray[i, 4].Text = (0).ToString();
+
+                qTableArray = new Label[_width * _height, 5];
+                for (int i = 0; i < _width * _height; ++i)
+                {
+                    for (int j = 0; j < 5; ++j)
+                    {
+                        qTableArray[i, j] = new Label();
+                        qTableArray[i, j].Parent = qTable;
+                        qTableArray[i, j].Location = new System.Drawing.Point(j * 36, i * 24);
+                        qTableArray[i, j].Size = new System.Drawing.Size(36, 24);
+                    }
+
+                    qTableArray[i, 0].Text = (i + 1).ToString();
+                    qTableArray[i, 1].Text = (0).ToString();
+                    qTableArray[i, 2].Text = (0).ToString();
+                    qTableArray[i, 3].Text = (0).ToString();
+                    qTableArray[i, 4].Text = (0).ToString();
+                }
             }
             //qTable.AutoScroll = false;
             //qTable.HorizontalScroll.Enabled = false;
@@ -242,13 +252,24 @@ namespace GoldDiggerGUI
                 else
                 {
                     _solver.QLearningAct();
-                    double[][] QTableValues = QTableValues = _solver.GetQTable();
-                    for (int i = 0; i < _width * _height; ++i)
+                    if (!_isSizeMoreThan10)
                     {
-                        qTableArray[i, 1].Text = QTableValues[i][0].ToString();
-                        qTableArray[i, 2].Text = QTableValues[i][1].ToString();
-                        qTableArray[i, 3].Text = QTableValues[i][2].ToString();
-                        qTableArray[i, 4].Text = QTableValues[i][3].ToString();
+                        double[][] QTableValues = QTableValues = _solver.GetQTable();
+                        for (int i = 0; i < _width * _height; ++i)
+                        {
+                            qTableArray[i, 1].Text = QTableValues[i][0].ToString();
+                            qTableArray[i, 2].Text = QTableValues[i][1].ToString();
+                            qTableArray[i, 3].Text = QTableValues[i][2].ToString();
+                            qTableArray[i, 4].Text = QTableValues[i][3].ToString();
+                        }
+                    }
+                    if (_golds.Contains(_agentPos))
+                    {
+                        _agentPos = _solver.AgentRandomPosition() + 1;
+                        int agentY = (_agentPos % _height);
+                        if (agentY == 0)
+                            agentY = _height;
+                        _agent.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * ((_agentPos - 1) / _height) + 2)), (int)(_scaleFactor * (32 * (agentY - 1) + 2)));
                     }
                 }
 
@@ -404,7 +425,6 @@ namespace GoldDiggerGUI
             {
                 PolicyValueIterationPanel.Visible = true;
                 qLearningPanel.Visible = false;
-                
             }
             else
             {
@@ -461,13 +481,16 @@ namespace GoldDiggerGUI
             else
             {
                 _solver.QLearningAct();
-                double[][] QTableValues = _solver.GetQTable();
-                for (int i = 0; i < _width * _height; ++i)
+                if (!_isSizeMoreThan10)
                 {
-                    qTableArray[i, 1].Text = QTableValues[i][0].ToString();
-                    qTableArray[i, 2].Text = QTableValues[i][1].ToString();
-                    qTableArray[i, 3].Text = QTableValues[i][2].ToString();
-                    qTableArray[i, 4].Text = QTableValues[i][3].ToString();
+                    double[][] QTableValues = _solver.GetQTable();
+                    for (int i = 0; i < _width * _height; ++i)
+                    {
+                        qTableArray[i, 1].Text = QTableValues[i][0].ToString();
+                        qTableArray[i, 2].Text = QTableValues[i][1].ToString();
+                        qTableArray[i, 3].Text = QTableValues[i][2].ToString();
+                        qTableArray[i, 4].Text = QTableValues[i][3].ToString();
+                    }
                 }
             }
         }
@@ -476,14 +499,6 @@ namespace GoldDiggerGUI
         {
             button3.Enabled = false;
             button4.Enabled = false;
-            if (_golds.Contains(_agentPos))
-            {
-                _agentPos = _solver.AgentRandomPosition() + 1;
-                int agentY = (_agentPos % _height);
-                if (agentY == 0)
-                    agentY = _height;
-                _agent.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * ((_agentPos - 1) / _height) + 2)), (int)(_scaleFactor * (32 * (agentY - 1) + 2)));
-            }
             QLearningAct();
             button3.Enabled = true;
             button4.Enabled = true;
@@ -493,6 +508,7 @@ namespace GoldDiggerGUI
         {
             button3.Enabled = false;
             button4.Enabled = false;
+            QLearningActWithoutAnim();
             if (_golds.Contains(_agentPos))
             {
                 _agentPos = _solver.AgentRandomPosition() + 1;
@@ -501,7 +517,6 @@ namespace GoldDiggerGUI
                     agentY = _height;
                 _agent.Location = new System.Drawing.Point((int)(_scaleFactor * (_offsetX + 32 * ((_agentPos - 1) / _height) + 2)), (int)(_scaleFactor * (32 * (agentY - 1) + 2)));
             }
-            QLearningActWithoutAnim();
             button3.Enabled = true;
             button4.Enabled = true;
         }
@@ -510,9 +525,13 @@ namespace GoldDiggerGUI
         {
             for (int i = 0; i < _directions.Length; ++i)
             {
-
                 _blocksIndx[i].Visible = checkBox2.Checked;
             }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            _solver.PrintQTable();
         }
     }
 } // GoldDiggerGUI

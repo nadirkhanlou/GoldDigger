@@ -126,7 +126,6 @@ namespace GoldDiggerCore {
 		}
 		for (auto action : AgentActions)
 			probDist[action] /= sum;
-		std::cout << "test\n";
 		return probDist;
 	}
 

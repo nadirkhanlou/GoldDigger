@@ -49,4 +49,9 @@ namespace GoldDigger {
 		return retVal;
 	}
 
+	void GoldDiggerSolver::PrintQTable()
+	{
+		m_Instance->PrintQTable();
+	}
+
 } // GoldDigger

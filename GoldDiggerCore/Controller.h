@@ -20,6 +20,7 @@ namespace GoldDiggerCore {
 		int AgentRandomPosition();
 		std::pair<int, int> Size();
 		double** GetQTable();
+		void PrintQTable();
 	};
 
 } //GoldDiggerSolver

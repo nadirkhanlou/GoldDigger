@@ -31,4 +31,8 @@ namespace GoldDiggerCore {
 	{
 		return _agent.GetQ();
 	}
+	void Controller::PrintQTable()
+	{
+		_agent.PrintQ();
+	}
 } // namespace goldDiggerCore

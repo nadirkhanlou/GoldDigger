@@ -18,5 +18,6 @@ namespace GoldDigger {
 		int QLearningAct();
 		int AgentRandomPosition();
 		array<array<double>^>^ GetQTable();
+		void PrintQTable();
 	};
 } // GoldDigger
