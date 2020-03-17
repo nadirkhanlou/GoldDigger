@@ -9,7 +9,7 @@
 #include "..//GoldDiggerGUI/AgentAction.cs"
 #include "Options.h"
 
-#define EPSILON 0.001
+#define EPSILON 0.00001
 #define NUM_OF_ACTIONS 4
 #define RANDOM static_cast<double>(std::rand()) / static_cast<double>(RAND_MAX)
 

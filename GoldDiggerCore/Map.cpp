@@ -97,16 +97,6 @@ namespace GoldDiggerCore {
 		return _map[pos];
 	}
 
-	std::pair<unsigned int, unsigned int> Map::Get2DCoordinate(unsigned int pos) {
-		assert(pos < _n * _m);
-		return std::make_pair(pos % _n, pos / _n);
-	}
-
-	unsigned int Map::GetFlatCoordinate(unsigned int x, unsigned int y) {
-		assert(pos < _n * _m);
-		return y * _n + x;
-	}
-
 	unsigned int Map::NextPosition(unsigned int pos, AgentAction action) {
 		assert(pos < _n * _m);
 		if (action == AgentAction::Up && _map[pos].up)
