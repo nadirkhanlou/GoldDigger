@@ -21,6 +21,7 @@ namespace GoldDiggerCore {
 		Options _options;
 		Map* _map;
 		double** _Q;
+		double* _QprobDist;
 
 	public:
 		Agent() : _currentPos(0), _map(nullptr), _Q(nullptr) { }
@@ -36,7 +37,7 @@ namespace GoldDiggerCore {
 		Options GetOptions() { return _options; };
 		void SetCurrentPos(unsigned int pos);
 		Block Sense() { return _map->Sense(_currentPos); }
-		static double* GetActionProbabilityDistribution(double* QRow);
+		static double* GetActionProbabilityDistribution(double* QRow, double*& probDist);
 		static AgentAction SelectAction(double* probDist);
 		//unsigned int NextPosition(AgentAction action) { return _map->NextPosition(_currentPos, action); }
 		AgentAction* ValueIteration(double gamma = 0.9);

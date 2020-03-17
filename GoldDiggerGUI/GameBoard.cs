@@ -449,18 +449,18 @@ namespace GoldDiggerGUI
 
         private void QLearningActWithoutAnim()
         {
-            int res = _solver.QLearningAct();
-            _qLearningFlag = true;
-            if (_result == null)
+            while (!_golds.Contains(_agentPos))
             {
-                _result = new int[_width * _height];
-                for (int i = 0; i < _width * _height; ++i)
-                    _result[i] = -1;
-            }
-            _result[_agentPos - 1] = res;
-            
-            if (!_golds.Contains(_agentPos))
-            {
+                int res = _solver.QLearningAct();
+                _qLearningFlag = true;
+                if (_result == null)
+                {
+                    _result = new int[_width * _height];
+                    for (int i = 0; i < _width * _height; ++i)
+                        _result[i] = -1;
+                }
+                _result[_agentPos - 1] = res;
+
                 switch (res)
                 {
                     case (int)AgentAction.Down:
@@ -476,23 +476,21 @@ namespace GoldDiggerGUI
                         _agentPos -= 1;
                         break;
                 }
-                QLearningActWithoutAnim();
             }
-            else
+
+            _solver.QLearningAct();
+            if (!_isSizeMoreThan10)
             {
-                _solver.QLearningAct();
-                if (!_isSizeMoreThan10)
+                double[][] QTableValues = _solver.GetQTable();
+                for (int i = 0; i < _width * _height; ++i)
                 {
-                    double[][] QTableValues = _solver.GetQTable();
-                    for (int i = 0; i < _width * _height; ++i)
-                    {
-                        qTableArray[i, 1].Text = QTableValues[i][0].ToString();
-                        qTableArray[i, 2].Text = QTableValues[i][1].ToString();
-                        qTableArray[i, 3].Text = QTableValues[i][2].ToString();
-                        qTableArray[i, 4].Text = QTableValues[i][3].ToString();
-                    }
+                    qTableArray[i, 1].Text = QTableValues[i][0].ToString();
+                    qTableArray[i, 2].Text = QTableValues[i][1].ToString();
+                    qTableArray[i, 3].Text = QTableValues[i][2].ToString();
+                    qTableArray[i, 4].Text = QTableValues[i][3].ToString();
                 }
             }
+
         }
 
         private void button3_Click(object sender, EventArgs e)

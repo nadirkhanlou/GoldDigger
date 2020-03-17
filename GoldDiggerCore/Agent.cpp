@@ -112,10 +112,10 @@ namespace GoldDiggerCore {
 		_currentPos = pos;
 	}
 
-	double* Agent::GetActionProbabilityDistribution(double* QRow) {
-		double* probDist = new double[NUM_OF_ACTIONS] {};
-		for (int i = 0; i < NUM_OF_ACTIONS; ++i)
-			probDist[i] = 0;
+	double* Agent::GetActionProbabilityDistribution(double* QRow, double*& probDist) {
+		//double* probDist = new double[NUM_OF_ACTIONS] {};
+		if (probDist == nullptr)
+			probDist = new double[NUM_OF_ACTIONS] {};
 
 		double sum = 0;
 		double temp;
@@ -264,11 +264,11 @@ namespace GoldDiggerCore {
 		}
 		
 		// Get the probability distribution of actions for each block
-		double* probDist = GetActionProbabilityDistribution(_Q[_currentPos]);
+		_QprobDist = GetActionProbabilityDistribution(_Q[_currentPos], _QprobDist);
 
 		// Select an action and execute it
-		AgentAction selectedAction = SelectAction(probDist);
-		delete[] probDist;
+		AgentAction selectedAction = SelectAction(_QprobDist);
+		//delete[] probDist;
 
 		// Execute the action, receive the immediate award and observe the 
 		// resulting position
@@ -281,12 +281,14 @@ namespace GoldDiggerCore {
 			max = std::max(max, reward + gamma * _Q[nextPos][action]);
 		_Q[_currentPos][selectedAction] = max;
 
-		if (_currentPos == nextPos && !_map->Sense(_currentPos).gold)
+		if (_currentPos == nextPos && !_map->Sense(_currentPos).gold) {
+			//std::cout << "test\n";
 			return QLearningAct();
+		}
 
 		_currentPos = nextPos;
 
-		std::cout << "Chose action " << selectedAction << " going to " << nextPos << "\n";
+		//std::cout << "Chose action " << selectedAction << " going to " << nextPos << "\n";
 
 		
 		return selectedAction;
