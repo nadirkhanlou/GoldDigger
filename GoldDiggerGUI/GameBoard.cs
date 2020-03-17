@@ -251,7 +251,7 @@ namespace GoldDiggerGUI
                 }
                 else
                 {
-                    _solver.QLearningAct();
+                    _solver.QLearningAct(GetGamma());
                     if (!_isSizeMoreThan10)
                     {
                         double[][] QTableValues = QTableValues = _solver.GetQTable();
@@ -350,7 +350,7 @@ namespace GoldDiggerGUI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            _result = _solver.PolicyIteration();
+            _result = _solver.PolicyIteration(GetGamma());
             _qLearningFlag = false;
             for (int i = 0; i < _result.Length; ++i)
             {
@@ -391,7 +391,7 @@ namespace GoldDiggerGUI
 
         private void button2_Click(object sender, EventArgs e)
         {
-            _result = _solver.ValueIteration();
+            _result = _solver.ValueIteration(GetGamma());
             _qLearningFlag = false;
             for (int i = 0; i < _result.Length; ++i)
             {
@@ -435,7 +435,7 @@ namespace GoldDiggerGUI
 
         private void QLearningAct()
         {
-            int res = _solver.QLearningAct();
+            int res = _solver.QLearningAct(GetGamma());
             _qLearningFlag = true;
             if (_result == null)
             {
@@ -451,7 +451,7 @@ namespace GoldDiggerGUI
         {
             while (!_golds.Contains(_agentPos))
             {
-                int res = _solver.QLearningAct();
+                int res = _solver.QLearningAct(GetGamma());
                 _qLearningFlag = true;
                 if (_result == null)
                 {
@@ -478,7 +478,7 @@ namespace GoldDiggerGUI
                 }
             }
 
-            _solver.QLearningAct();
+            _solver.QLearningAct(GetGamma());
             if (!_isSizeMoreThan10)
             {
                 double[][] QTableValues = _solver.GetQTable();
@@ -552,6 +552,13 @@ namespace GoldDiggerGUI
             }
             button3.Enabled = true;
             button4.Enabled = true;
+        }
+
+        private double GetGamma()
+        {
+            double gamma = .9f;
+            double.TryParse(gammaText.Text, out gamma);
+            return gamma;
         }
     }
 } // GoldDiggerGUI

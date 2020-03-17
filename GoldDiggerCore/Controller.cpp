@@ -7,17 +7,17 @@ namespace GoldDiggerCore {
 	{
 		_agent = Agent(&_map);
 	}
-	AgentAction* Controller::ValueIteration()
+	AgentAction* Controller::ValueIteration(double gamma)
 	{
-		return _agent.ValueIteration();
+		return _agent.ValueIteration(gamma);
 	}
-	AgentAction* Controller::PolicyIteration()
+	AgentAction* Controller::PolicyIteration(double gamma)
 	{
-		return _agent.PolicyIteration();
+		return _agent.PolicyIteration(gamma);
 	}
-	AgentAction Controller::QLearningAct()
+	AgentAction Controller::QLearningAct(double gamma)
 	{
-		return _agent.QLearningAct();
+		return _agent.QLearningAct(gamma);
 	}
 	int Controller::AgentRandomPosition()
 	{

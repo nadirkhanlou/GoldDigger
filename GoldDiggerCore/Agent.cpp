@@ -268,7 +268,6 @@ namespace GoldDiggerCore {
 
 		// Select an action and execute it
 		AgentAction selectedAction = SelectAction(_QprobDist);
-		//delete[] probDist;
 
 		// Execute the action, receive the immediate award and observe the 
 		// resulting position

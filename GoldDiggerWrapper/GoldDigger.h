@@ -13,9 +13,9 @@ namespace GoldDigger {
 	private:
 	public:
 		GoldDiggerSolver(String^ path);
-		array<int>^ ValueIteration();
-		array<int>^ PolicyIteration();
-		int QLearningAct();
+		array<int>^ ValueIteration(double gamma);
+		array<int>^ PolicyIteration(double gamma);
+		int QLearningAct(double gamma);
 		int AgentRandomPosition();
 		array<array<double>^>^ GetQTable();
 		void PrintQTable();

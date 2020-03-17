@@ -6,8 +6,8 @@ namespace GoldDigger {
 		srand(time(0));
 	}
 
-	array<int>^ GoldDiggerSolver::ValueIteration() {
-		AgentAction* actions = m_Instance->ValueIteration();
+	array<int>^ GoldDiggerSolver::ValueIteration(double gamma) {
+		AgentAction* actions = m_Instance->ValueIteration(gamma);
 		array<int>^ result = gcnew array<int>(m_Instance->Size().first * m_Instance->Size().second);
 		for (int i = 0; i < result->Length; ++i) {
 			result[i] = (int)actions[i];
@@ -15,8 +15,8 @@ namespace GoldDigger {
 		return result;
 	}
 
-	array<int>^ GoldDiggerSolver::PolicyIteration() {
-		AgentAction* actions = m_Instance->PolicyIteration();
+	array<int>^ GoldDiggerSolver::PolicyIteration(double gamma) {
+		AgentAction* actions = m_Instance->PolicyIteration(gamma);
 		array<int>^ result = gcnew array<int>(m_Instance->Size().first * m_Instance->Size().second);
 		for (int i = 0; i < result->Length; ++i) {
 			result[i] = (int)actions[i];
@@ -24,9 +24,9 @@ namespace GoldDigger {
 		return result;
 	}
 
-	int GoldDiggerSolver::QLearningAct()
+	int GoldDiggerSolver::QLearningAct(double gamma)
 	{
-		AgentAction action = m_Instance->QLearningAct();
+		AgentAction action = m_Instance->QLearningAct(gamma);
 		return action;
 	}
 

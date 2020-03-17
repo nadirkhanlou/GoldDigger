@@ -14,9 +14,9 @@ namespace GoldDiggerCore {
 		Agent _agent;
 	public:
 		Controller(const char* path);
-		AgentAction* ValueIteration();
-		AgentAction* PolicyIteration();
-		AgentAction QLearningAct();
+		AgentAction* ValueIteration(double gamma);
+		AgentAction* PolicyIteration(double gamma);
+		AgentAction QLearningAct(double gamma);
 		int AgentRandomPosition();
 		std::pair<int, int> Size();
 		double** GetQTable();

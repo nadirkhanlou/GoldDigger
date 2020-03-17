@@ -34,13 +34,15 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.PolicyValueIterationPanel = new System.Windows.Forms.Panel();
             this.qLearningPanel = new System.Windows.Forms.Panel();
+            this.nIterationText = new System.Windows.Forms.TextBox();
+            this.button6 = new System.Windows.Forms.Button();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.button4 = new System.Windows.Forms.Button();
             this.qTable = new System.Windows.Forms.Panel();
             this.button5 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.nIterationText = new System.Windows.Forms.TextBox();
+            this.gammaText = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.PolicyValueIterationPanel.SuspendLayout();
             this.qLearningPanel.SuspendLayout();
             this.SuspendLayout();
@@ -114,6 +116,25 @@
             this.qLearningPanel.TabIndex = 5;
             this.qLearningPanel.Visible = false;
             // 
+            // nIterationText
+            // 
+            this.nIterationText.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.nIterationText.Location = new System.Drawing.Point(192, 373);
+            this.nIterationText.Name = "nIterationText";
+            this.nIterationText.Size = new System.Drawing.Size(62, 20);
+            this.nIterationText.TabIndex = 6;
+            this.nIterationText.Text = "100";
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(79, 372);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(107, 23);
+            this.button6.TabIndex = 5;
+            this.button6.Text = "n Iteration";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
@@ -163,30 +184,31 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // button6
+            // gammaText
             // 
-            this.button6.Location = new System.Drawing.Point(79, 372);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(107, 23);
-            this.button6.TabIndex = 5;
-            this.button6.Text = "n Iteration";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.gammaText.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.gammaText.Location = new System.Drawing.Point(837, 65);
+            this.gammaText.Name = "gammaText";
+            this.gammaText.Size = new System.Drawing.Size(44, 20);
+            this.gammaText.TabIndex = 7;
+            this.gammaText.Text = "0.9";
             // 
-            // nIterationText
+            // label1
             // 
-            this.nIterationText.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.nIterationText.Location = new System.Drawing.Point(192, 373);
-            this.nIterationText.Name = "nIterationText";
-            this.nIterationText.Size = new System.Drawing.Size(62, 20);
-            this.nIterationText.TabIndex = 6;
-            this.nIterationText.Text = "100";
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(786, 68);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(46, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Gamma:";
             // 
             // GameBoard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 460);
+            this.ClientSize = new System.Drawing.Size(893, 460);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.gammaText);
             this.Controls.Add(this.qLearningPanel);
             this.Controls.Add(this.PolicyValueIterationPanel);
             this.Controls.Add(this.comboBox1);
@@ -198,6 +220,7 @@
             this.qLearningPanel.ResumeLayout(false);
             this.qLearningPanel.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -216,5 +239,7 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.TextBox nIterationText;
+        private System.Windows.Forms.TextBox gammaText;
+        private System.Windows.Forms.Label label1;
     }
 }
